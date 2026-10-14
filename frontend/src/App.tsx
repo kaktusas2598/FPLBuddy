@@ -11,6 +11,8 @@ function App() {
   const [count, setCount] = useState(0)
 
 
+  // Creates status variable and setStatus func to update it and tell React to render it
+  const [status, setStatus] = useState<string>("Checking..")
 
   // This HTML like syntax is JSX or for typescript its TSX
   return (
@@ -22,7 +24,7 @@ function App() {
         <div>
           <h1>FPL Buddy</h1>
           <p>Fantasy Premier League Assistant</p>
-                  </div>
+      </div>
         <button
           type="button"
           className="counter"
@@ -31,6 +33,8 @@ function App() {
           Count is {count}
         </button>
       </section>
+
+      <p>Server status: {status}</p>
 
       <div className="ticks"></div>
 
