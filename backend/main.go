@@ -6,9 +6,7 @@ import (
 )
 
 func main() {
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-        fmt.Fprintln(w, "test")
-    })
+	http.ListenAndServe(":8080", nil)
 
     http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
         fmt.Fprintln(w, "OK")
