@@ -11,8 +11,8 @@ import (
 // FPL Team struct
 type Team struct {
 	ID           int    `json:"id"`
-	Name         string `json:"id"`
-	ShortName    string `json:"id"`
+	Name         string `json:"name"`
+	ShortName    string `json:"short_name"`
 }
 
 func main() {
@@ -36,6 +36,9 @@ func main() {
 		  -d '{"query":"{ teams { items { id name short_name } } }"}'
 		*/
         fmt.Fprintln(w, "TODO")
+
+		bytes.NewBufferString(graphQLQuery)
+        http.NewRequestWithContext()
     })
 
 
