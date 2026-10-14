@@ -10,7 +10,7 @@ func main() {
         fmt.Fprintln(w, "OK")
     })
 
-	http.HandleFunc("/api/players", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/players", func(w http.ResponseWriter, r *http.Request) {
         fmt.Fprintln(w, "Haaland????")
     })
 
