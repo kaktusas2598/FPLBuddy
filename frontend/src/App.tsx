@@ -57,6 +57,11 @@ function App() {
                 Learn more
               </a>
             </li>
+            <li>
+              <a href="https://go.dev/doc/tutorial/" target="_blank">
+                GoLang Tutorials
+              </a>
+            </li>
           </ul>
         </div>
       </section>
