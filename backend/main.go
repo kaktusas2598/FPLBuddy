@@ -24,7 +24,7 @@ func main() {
         fmt.Fprintln(w, "Haaland????")
     })
 
-	http.HandleFunc("/players", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/teams", func(w http.ResponseWriter, r *http.Request) {
 		// We define a go string and then use Unmarshal to store it in json object
 		graphQLQuery := `{"query":"{ teams { items { id name short_name } } }"}`
 		json.Unmarshal([]byte(graphQLQuery), &graphQlJsonQuery)
