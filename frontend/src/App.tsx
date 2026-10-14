@@ -13,13 +13,27 @@ function App() {
   // Creates status variable and setStatus func to update it and tell React to render it
   const [status, setStatus] = useState<string>("Checking..")
 
+
+  const [players, setPlayers] = useState<string>("")
+
   useEffect(() => {
       async function checkServerHealth() {
           const healthResponse = await fetch('/api/health');
-          const healthResult = await response.text();
+          const healthResult = await healthResponse.text();
+
+          setStatus(healthResult)
       }
 
+      async function getPlayers() {
+          const playersResponse = await fetch('/api/players');
+          const playersResult = await playersResponse.text();
+
+          setPlayers(playersResult)
+      }
+
+
       checkServerHealth()
+      getPlayers()
   }, []);
 
   // This HTML like syntax is JSX or for typescript its TSX
@@ -43,6 +57,7 @@ function App() {
       </section>
 
       <p>Server status: {status}</p>
+      <p>Prem players: {players}</p>
 
       <div className="ticks"></div>
 
