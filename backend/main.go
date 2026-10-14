@@ -27,7 +27,11 @@ func main() {
 	http.HandleFunc("/teams", func(w http.ResponseWriter, r *http.Request) {
 		// We define a go string and then use Unmarshal to store it in json object
 		graphQLQuery := `{"query":"{ teams { items { id name short_name } } }"}`
-		json.Unmarshal([]byte(graphQLQuery), &graphQlJsonQuery)
+
+		team := Team{ID: 1, Name: "Brighton", ShortName: "BHA"}
+
+		json.Unmarshal([]byte(graphQLQuery), &team)
+
 		// TODO: call unofficial FPL api by constructing GraphQL query and returning json here
 		/*
 		curl -X POST \
@@ -38,7 +42,16 @@ func main() {
         fmt.Fprintln(w, "TODO")
 
 		bytes.NewBufferString(graphQLQuery)
-        http.NewRequestWithContext()
+		ctx := context.Background()
+		req, err := http.NewRequestWithContext(
+			ctx,
+			"POST",
+			"https://fpl-api-6h0d.onrender.com/graphql",
+			nil
+		)
+		if err != nil {
+			fmt.Println("Error crearing GraphQL request: ", err)
+		}
     })
 
 
