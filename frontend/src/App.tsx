@@ -1,26 +1,28 @@
+// React hook
 import { useState } from 'react'
 import heroImg from './assets/hero.png'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
+import premierLeagueLogo from './assets/premier-league-logo.png'
 import './App.css'
 
+// App() is a React component
 function App() {
   const [count, setCount] = useState(0)
 
+
+
+  // This HTML like syntax is JSX or for typescript its TSX
   return (
     <>
       <section id="center">
         <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
+          <img src={premierLeagueLogo} className="base" width="170" height="179" alt="" />
         </div>
         <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
+          <h1>FPL Buddy</h1>
+          <p>Fantasy Premier League Assistant</p>
+                  </div>
         <button
           type="button"
           className="counter"
@@ -38,7 +40,6 @@ function App() {
             <use href="/icons.svg#documentation-icon"></use>
           </svg>
           <h2>Documentation</h2>
-          <p>Your questions, answered</p>
           <ul>
             <li>
               <a href="https://vite.dev/" target="_blank">
