@@ -73,6 +73,7 @@ function App() {
             </button>
           </section>
 
+          My team id: 1894731
           <div className="ticks"></div>
 
           <div className="teams-grid">

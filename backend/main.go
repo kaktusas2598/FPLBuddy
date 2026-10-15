@@ -92,6 +92,50 @@ func main() {
 		json.NewEncoder(w).Encode(teams)
     })
 
+	http.HandleFunc("/manager/{id}", func(w http.ResponseWriter, r *http.Request) {
+		managerID := r.PathValue("id")
+
+		url := fmt.Sprintf(
+			"https://fantasy.premierleague.com/api/entry/%s/",
+			managerID,
+		)
+
+		// Unofficial FPL GraphQL does not support fetching the squad data so here we are using the official API
+		req, err := http.NewRequestWithContext(r.Context(), "GET", url, nil)
+
+		if err != nil {
+			fmt.Println("Error creating FPL API request: ", err)
+			return
+		}
+
+		client := &http.Client{}
+		response, err := client.Do(req)
+
+		if err != nil {
+			fmt.Println("Error making FPL API request: ", err)
+			return
+		}
+
+		defer response.Body.Close()
+
+		if response.StatusCode != 200 {
+			fmt.Println("response status: ", response.StatusCode)
+			return
+		}
+
+		rawResponse, err := io.ReadAll(response.Body)
+		if err != nil {
+			fmt.Fprintln(w, err)
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		w.Write(rawResponse)
+		//fmt.Fprintf(w, "%s", rawResponse)
+		//json.NewEncoder(w).Encode(rawResponse)
+	})
+
+
 
 	http.ListenAndServe(":8080", nil)
 }
