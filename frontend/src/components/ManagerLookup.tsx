@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 interface Manager {
   name: string;
@@ -7,8 +7,6 @@ interface Manager {
   summary_overall_points: number;
   summary_overall_rank: number;
 }
-
-
 
 function ManagerLookup() {
     const [managerId, setManagerId] = useState('');
@@ -19,11 +17,15 @@ function ManagerLookup() {
         e.preventDefault();
 
         setLoading(true);
+        setManager(null);
 
         try {
             const managerResponse = await fetch('/api/manager/' + managerId);
-            const managerResult = await managerResponse.json();
+            if (!managerResponse.ok) {
+                throw new Error(`Manager lookup failed: ${managerResponse.status}`);
+            }
 
+            const managerResult = await managerResponse.json();
             setManager(managerResult)
             console.log(managerResult);
         } catch (error) {

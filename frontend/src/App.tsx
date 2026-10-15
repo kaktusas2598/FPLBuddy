@@ -71,8 +71,7 @@ function App() {
 
           <ManagerLookup />
 
-          <div className="ticks"></div>
-
+          <p>Premier League Teams</p>
           <div className="teams-grid">
             {teams.map((team) => (
               <div className="team-card" key={team.id}>
@@ -82,38 +81,6 @@ function App() {
             ))}
           </div>
 
-          <div className="ticks"></div>
-
-          <section id="next-steps">
-            <div id="docs">
-              <svg className="icon" role="presentation" aria-hidden="true">
-                <use href="/icons.svg#documentation-icon"></use>
-              </svg>
-              <h2>Documentation</h2>
-              <ul>
-                <li>
-                  <a href="https://vite.dev/" target="_blank">
-                    <img className="logo" src={viteLogo} alt="" />
-                    Explore Vite
-                  </a>
-                </li>
-                <li>
-                  <a href="https://react.dev/" target="_blank">
-                    <img className="button-icon" src={reactLogo} alt="" />
-                    Learn more
-                  </a>
-                </li>
-                <li>
-                  <a href="https://go.dev/doc/tutorial/" target="_blank">
-                    GoLang Tutorials
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </section>
-
-          <div className="ticks"></div>
-          <section id="spacer"></section>
       </main>
 
       <footer className="app-footer">
