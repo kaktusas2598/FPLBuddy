@@ -131,8 +131,6 @@ func main() {
 
 		w.Header().Set("Content-Type", "application/json")
 		w.Write(rawResponse)
-		//fmt.Fprintf(w, "%s", rawResponse)
-		//json.NewEncoder(w).Encode(rawResponse)
 	})
 
 
