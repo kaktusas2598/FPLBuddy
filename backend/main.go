@@ -40,13 +40,16 @@ func main() {
 			"https://fpl-api-6h0d.onrender.com/graphql",
 			bytes.NewBufferString(graphQLQuery)
 		)
-		req.Header.set("Content-Type", "application/json")
+		req.Header.Set("Content-Type", "application/json")
 
 		if err != nil {
 			fmt.Println("Error crearing GraphQL request: ", err)
 		}
 
-		fmt.Println("Request created: ", req.URL)
+		client := &http.Client{}
+		response, err := client.Do(req)
+
+		fmt.Println("Request response status: ", response.StatusCode)
     })
 
 
