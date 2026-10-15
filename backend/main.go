@@ -43,15 +43,12 @@ func main() {
 
 		bytes.NewBufferString(graphQLQuery)
 		ctx := context.Background()
-		req, err := http.NewRequestWithContext(
-			ctx,
-			"POST",
-			"https://fpl-api-6h0d.onrender.com/graphql",
-			nil
-		)
+		req, err := http.NewRequestWithContext(ctx, "POST", "https://fpl-api-6h0d.onrender.com/graphql", nil)
 		if err != nil {
 			fmt.Println("Error crearing GraphQL request: ", err)
 		}
+
+		fmt.Println("Request created: ", req.URL)
     })
 
 
