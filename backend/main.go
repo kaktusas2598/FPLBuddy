@@ -35,7 +35,6 @@ func main() {
 			"https://fpl-api-6h0d.onrender.com/graphql",
 			bytes.NewBufferString(graphQLQuery),
 		)
-		req.Header.Set("Content-Type", "application/json")
 
 		if err != nil {
 			fmt.Println("Error creating GraphQL request: ", err)
@@ -43,6 +42,7 @@ func main() {
 		}
 
 		// Actually sending off the request
+		req.Header.Set("Content-Type", "application/json")
 		client := &http.Client{}
 		response, err := client.Do(req)
 
@@ -53,8 +53,10 @@ func main() {
 
 		defer response.Body.Close()
 
-
-		fmt.Println("Request response status: ", response.StatusCode)
+		if response.StatusCode != 200 {
+			fmt.Println("response status: ", response.StatusCode)
+			return
+		}
 
 		rawResponse, err := io.ReadAll(response.Body)
 		if err != nil {
@@ -77,6 +79,7 @@ func main() {
 
 		if err != nil {
 			fmt.Println("JSON Unmarshal error: ", err)
+			return
 		}
 
 		//fmt.Printf("%+v", teamsResult)
@@ -84,7 +87,9 @@ func main() {
 		teams = teamsResult.Data.Teams.Items
 
 
-		fmt.Fprintln(w, teams[5].Name)
+		// Set response type and encode it as json
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(teams)
     })
 
 

@@ -182,3 +182,87 @@
     border-right-color: var(--border);
   }
 }
+
+/* My custom styling rules */
+
+/* Team Grid Rules */
+.teams-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.team-card {
+  padding: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+/* Footer Rules */
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-main {
+  flex: 1;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.app-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+
+  width: 100%;
+  box-sizing: border-box;
+  padding: 20px 32px;
+  margin-top: 48px;
+
+  border-top: 1px solid #303744;
+  background-color: #161b22;
+  color: #aab4c3;
+
+  font-size: 0.85rem;
+}
+
+.footer-links {
+  display: flex;
+  gap: 20px;
+}
+
+.footer-links a {
+  color: #aab4c3;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer-links a:hover {
+  color: #ffffff;
+}
+
+.server-status strong {
+  color: #4ade80;
+}
+
+@media (max-width: 600px) {
+  .app-footer {
+    flex-direction: column;
+    text-align: center;
+    padding: 24px 16px;
+  }
+}
