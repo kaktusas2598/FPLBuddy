@@ -28,9 +28,6 @@ func main() {
 		// We define a go string and then use Unmarshal to store it in json object
 		graphQLQuery := `{"query":"{ teams { items { id name short_name } } }"}`
 
-		//team := Team{ID: 1, Name: "Brighton", ShortName: "BHA"}
-		//json.Unmarshal([]byte(graphQLQuery), &team)
-
 		// Creating POST request with graphql query as a body
 		req, err := http.NewRequestWithContext(
 			r.Context(),
@@ -64,16 +61,30 @@ func main() {
 			fmt.Fprintln(w, err)
 		}
 
-		fmt.Fprintf(w, "%s", rawResponse)
+		//fmt.Fprintf(w, "%s", rawResponse)
 
 
 		var teams []Team
-		err = json.Unmarshal(rawResponse, &teams)
+		// Creating a nested anonymous struct to allow unmarshalling raw json response into typed structure
+		var teamsResult struct {
+			Data struct {
+				Teams struct {
+					Items []Team `json:"items"`
+				} `json:"teams"`
+			} `json:"data"`
+		}
+		err = json.Unmarshal(rawResponse, &teamsResult)
+
 		if err != nil {
 			fmt.Println("JSON Unmarshal error: ", err)
 		}
 
-		fmt.Printf("%+v", teams)
+		//fmt.Printf("%+v", teamsResult)
+
+		teams = teamsResult.Data.Teams.Items
+
+
+		fmt.Fprintln(w, teams[5].Name)
     })
 
 

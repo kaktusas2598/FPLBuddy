@@ -15,6 +15,7 @@ function App() {
 
 
   const [players, setPlayers] = useState<string>("")
+  const [teams, setTeams] = useState<string>("")
 
   useEffect(() => {
       async function checkServerHealth() {
@@ -31,9 +32,18 @@ function App() {
           setPlayers(playersResult)
       }
 
+      async function getTeams() {
+          const teamsResponse = await fetch('/api/teams');
+          const teamsResult = await teamsResponse.text();
+
+          setTeams(teamsResult)
+      }
+
+
 
       checkServerHealth()
       getPlayers()
+      getTeams()
   }, []);
 
   // This HTML like syntax is JSX or for typescript its TSX
@@ -58,6 +68,7 @@ function App() {
 
       <p>Server status: {status}</p>
       <p>Prem players: {players}</p>
+      <p>Prem teams: {teams}</p>
 
       <div className="ticks"></div>
 
