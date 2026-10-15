@@ -5,7 +5,6 @@ import (
     "net/http"
     "encoding/json"
     "bytes"
-    "context"
     "io"
 )
 
@@ -34,7 +33,7 @@ func main() {
 
 		// Creating POST request with graphql query as a body
 		req, err := http.NewRequestWithContext(
-			context.Background(),
+			r.Context(),
 			"POST",
 			"https://fpl-api-6h0d.onrender.com/graphql",
 			bytes.NewBufferString(graphQLQuery),
@@ -55,6 +54,8 @@ func main() {
 			return
 		}
 
+		defer response.Body.Close()
+
 
 		fmt.Println("Request response status: ", response.StatusCode)
 
@@ -73,9 +74,6 @@ func main() {
 		}
 
 		fmt.Printf("%+v", teams)
-
-
-		defer response.Body.close()
     })
 
 
