@@ -1,0 +1,83 @@
+import { useState, useEffect } from 'react'
+
+interface Manager {
+  name: string;
+  player_first_name: string;
+  player_last_name: string;
+  summary_overall_points: number;
+  summary_overall_rank: number;
+}
+
+
+
+function ManagerLookup() {
+    const [managerId, setManagerId] = useState('');
+    const [manager, setManager] = useState<Manager | null>(null);
+    const [loading, setLoading] = useState(false);
+
+    async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
+        e.preventDefault();
+
+        setLoading(true);
+
+        try {
+            const managerResponse = await fetch('/api/manager/' + managerId);
+            const managerResult = await managerResponse.json();
+
+            setManager(managerResult)
+            console.log(managerResult);
+        } catch (error) {
+            console.log('Failed to fetch manager:', error);
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    return (
+        <>
+            <form onSubmit={handleSubmit} className="manager-form">
+              <label htmlFor="manager-id">Find your FPL team</label>
+
+              <div className="manager-input-group">
+                <input
+                  id="manager-id"
+                  type="number"
+                  min="1"
+                  placeholder="e.g. 1894731"
+                  value={managerId}
+                  onChange={(e) => setManagerId(e.target.value)}
+                  required
+                />
+
+                <button type="submit" disabled={loading}>
+                  {loading ? 'Searching...' : 'Find Team'}
+                </button>
+              </div>
+            </form>
+
+            {manager && (
+              <div className="manager-result">
+                <h2>{manager.name}</h2>
+
+                <p>
+                  Manager: {manager.player_first_name} {manager.player_last_name}
+                </p>
+
+                <div className="manager-stats">
+                  <div>
+                    <span>Overall points</span>
+                    <strong>{manager.summary_overall_points.toLocaleString()}</strong>
+                  </div>
+
+                  <div>
+                    <span>Overall rank</span>
+                    <strong>{manager.summary_overall_rank.toLocaleString()}</strong>
+                  </div>
+                </div>
+              </div>
+            )}
+    </>
+    )
+}
+
+export default ManagerLookup;

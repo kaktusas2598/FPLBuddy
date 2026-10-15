@@ -6,6 +6,9 @@ import viteLogo from './assets/vite.svg'
 import premierLeagueLogo from './assets/premier-league-logo.png'
 import './App.css'
 
+// Custom components
+import ManagerLookup from './components/ManagerLookup.tsx'
+
 interface Team {
     id: number;
     name: string;
@@ -64,16 +67,10 @@ function App() {
               <h1>FPL Buddy</h1>
               <p>Fantasy Premier League Assistant</p>
           </div>
-            <button
-              type="button"
-              className="counter"
-              onClick={() => setCount((count) => count + 1)}
-            >
-              Count is {count}
-            </button>
           </section>
 
-          My team id: 1894731
+          <ManagerLookup />
+
           <div className="ticks"></div>
 
           <div className="teams-grid">
