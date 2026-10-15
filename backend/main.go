@@ -32,18 +32,16 @@ func main() {
 
 		json.Unmarshal([]byte(graphQLQuery), &team)
 
-		// TODO: call unofficial FPL api by constructing GraphQL query and returning json here
-		/*
-		curl -X POST \
-		  https://fpl-api-6h0d.onrender.com/graphql \
-		  -H 'Content-Type: application/json' \
-		  -d '{"query":"{ teams { items { id name short_name } } }"}'
-		*/
         fmt.Fprintln(w, "TODO")
 
-		bytes.NewBufferString(graphQLQuery)
-		ctx := context.Background()
-		req, err := http.NewRequestWithContext(ctx, "POST", "https://fpl-api-6h0d.onrender.com/graphql", nil)
+		req, err := http.NewRequestWithContext(
+			context.Background(),
+			"POST",
+			"https://fpl-api-6h0d.onrender.com/graphql",
+			bytes.NewBufferString(graphQLQuery)
+		)
+		req.Header.set("Content-Type", "application/json")
+
 		if err != nil {
 			fmt.Println("Error crearing GraphQL request: ", err)
 		}
