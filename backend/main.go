@@ -6,6 +6,7 @@ import (
     "encoding/json"
     "bytes"
     "context"
+    "io"
 )
 
 // FPL Team struct
@@ -32,24 +33,40 @@ func main() {
 
 		json.Unmarshal([]byte(graphQLQuery), &team)
 
-        fmt.Fprintln(w, "TODO")
-
+		// Creating POST request with graphql query as a body
 		req, err := http.NewRequestWithContext(
 			context.Background(),
 			"POST",
 			"https://fpl-api-6h0d.onrender.com/graphql",
-			bytes.NewBufferString(graphQLQuery)
+			bytes.NewBufferString(graphQLQuery),
 		)
 		req.Header.Set("Content-Type", "application/json")
 
 		if err != nil {
-			fmt.Println("Error crearing GraphQL request: ", err)
+			fmt.Println("Error creating GraphQL request: ", err)
+			return
 		}
 
+		// Actually sending off the request
 		client := &http.Client{}
 		response, err := client.Do(req)
 
+		if err != nil {
+			fmt.Println("Error making GraphQL request: ", err)
+			return
+		}
+
+
 		fmt.Println("Request response status: ", response.StatusCode)
+
+		rawResponse, err := io.ReadAll(response.Body)
+		if err != nil {
+			fmt.Fprintln(w, err)
+		}
+
+		fmt.Fprintf(w, "%s", rawResponse)
+
+		//defer response.Body.close()
     })
 
 
