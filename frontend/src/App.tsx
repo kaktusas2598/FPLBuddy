@@ -1,24 +1,21 @@
 // React hooks
 import { useState, useEffect } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
 import premierLeagueLogo from './assets/premier-league-logo.png'
 import './App.css'
 
 // Custom components
 import ManagerLookup from './components/ManagerLookup.tsx'
+import CurrentGameweek from './components/CurrentGameweek.tsx'
 
 interface Team {
     id: number;
+    code: number;
     name: string;
     short_name: string;
 }
 
 // App() is a React component
 function App() {
-  const [count, setCount] = useState(0)
-
   // Creates status variable and setStatus func to update it and tell React to render it
   const [status, setStatus] = useState<string>("Checking..")
 
@@ -69,12 +66,19 @@ function App() {
           </div>
           </section>
 
+          <CurrentGameweek />
           <ManagerLookup />
 
           <p>Premier League Teams</p>
           <div className="teams-grid">
             {teams.map((team) => (
               <div className="team-card" key={team.id}>
+                <img
+                    src={`https://resources.premierleague.com/premierleague25/badges/${team.code}.svg`}
+                    alt={`${team.name} badge`}
+                    width="48"
+                    height="48"
+                />
                 <h3>{team.name}</h3>
                 <span>{team.short_name}</span>
               </div>
