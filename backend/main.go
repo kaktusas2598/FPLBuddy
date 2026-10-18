@@ -1,11 +1,12 @@
 package main
 
 import (
-    "fmt"
-    "net/http"
-    "encoding/json"
-    "bytes"
-    "io"
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"io"
+	"net/http"
+	"strconv"
 )
 
 // FPL Team struct
@@ -17,10 +18,13 @@ type Team struct {
 }
 
 type Player struct {
+	ID      int	   `json:"id"`
     WebName string `json:"web_name"`
+    Team    int    `json:"team"`
 }
 
 type GameWeek struct {
+	ID           int 	`json:"id"`
 	Name         string `json:"name"`
 	DeadlineTime string `json:"deadline_time"`
 	MostPoints   Player `json:"top_element"`
@@ -105,7 +109,7 @@ func main() {
     })
 
 	http.HandleFunc("/current-gameweek", func(w http.ResponseWriter, r *http.Request) {
-		graphQLQuery := `{"query":"{ events(where: { is_current: { eq: true } }) { items { name deadline_time most_selected { web_name } top_element { web_name } } } }"}`
+		graphQLQuery := `{"query":"{ events(where: { is_current: { eq: true } }) { items { id name deadline_time most_selected { web_name } top_element { web_name } } } }"}`
 
 		// Creating POST request with graphql query as a body
 		req, err := http.NewRequestWithContext(
@@ -207,6 +211,57 @@ func main() {
 		w.Header().Set("Content-Type", "application/json")
 		w.Write(rawResponse)
 	})
+
+	// For example, Haaland is 411th element
+	http.HandleFunc("/player/{id}", func(w http.ResponseWriter, r *http.Request) {
+		playerID, err := strconv.Atoi(r.PathValue("id"))
+		if err != nil {
+			http.Error(w, "Invalid player ID", http.StatusInternalServerError)
+			return
+		}
+
+
+		req, err := http.NewRequestWithContext(r.Context(), "GET", "https://fantasy.premierleague.com/api/elements/", nil)
+
+		if err != nil {
+			fmt.Println("Error creating FPL API request: ", err)
+			return
+		}
+
+		client := &http.Client{}
+		response, err := client.Do(req)
+
+		if err != nil {
+			fmt.Println("Error making FPL API request: ", err)
+			return
+		}
+
+		defer response.Body.Close()
+
+		if response.StatusCode != 200 {
+			fmt.Println("response status: ", response.StatusCode)
+			return
+		}
+
+		var players []Player
+
+		err = json.NewDecoder(response.Body).Decode(&players)
+		if err != nil {
+			http.Error(w, "Failed to decode players response", http.StatusInternalServerError)
+			return
+		}
+
+		for _, player := range players {
+			if player.ID == playerID {
+				w.Header().Set("Content-Type", "application/json")
+				json.NewEncoder(w).Encode(player)
+				return
+			}
+		}
+
+		http.Error(w, "Failed to find the player", http.StatusInternalServerError)
+	})
+
 
 
 
