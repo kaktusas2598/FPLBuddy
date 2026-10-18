@@ -148,6 +148,10 @@ func GetCurrentGameweek(ctx context.Context) (GameWeek, error) {
 		return GameWeek{}, fmt.Errorf("json unmarshal error: %w", err)
 	}
 
+	if (len(eventResult.Data.Events.Items) == 0) {
+		return GameWeek{}, fmt.Errorf("no current gameweek found")
+	}
+
 	currentGameweek = eventResult.Data.Events.Items[0]
 
 	return currentGameweek, nil
