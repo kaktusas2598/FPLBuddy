@@ -11,30 +11,10 @@ import (
 	"github.com/kaktusas2598/FPLBuddy/backend/internal/handlers"
 )
 
-// FPL Team struct
-type Team struct {
-	ID           int    `json:"id"`
-	Name         string `json:"name"`
-	ShortName    string `json:"short_name"`
-	Code		 int    `json:"code"` // Matches to SVG path from official FPL API to extract the logo
-}
-
-type GameWeek struct {
-	ID           int 	`json:"id"`
-	Name         string `json:"name"`
-	DeadlineTime string `json:"deadline_time"`
-	MostPoints   fpl.Player `json:"top_element"`
-	MostSelected fpl.Player `json:"most_selected"`
-}
-
 func main() {
-    http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
-        fmt.Fprintln(w, "OK")
-    })
-
-	http.HandleFunc("/players", func(w http.ResponseWriter, r *http.Request) {
-        fmt.Fprintln(w, "Haaland????")
-    })
+	http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintln(w, "OK")
+	})
 
 	http.HandleFunc("/teams", func(w http.ResponseWriter, r *http.Request) {
 		// We define a go string and then use Unmarshal to store it in json object
@@ -47,7 +27,6 @@ func main() {
 			"https://fpl-api-6h0d.onrender.com/graphql",
 			bytes.NewBufferString(graphQLQuery),
 		)
-
 		if err != nil {
 			fmt.Println("Error creating GraphQL request: ", err)
 			return
@@ -57,7 +36,6 @@ func main() {
 		req.Header.Set("Content-Type", "application/json")
 		client := &http.Client{}
 		response, err := client.Do(req)
-
 		if err != nil {
 			fmt.Println("Error making GraphQL request: ", err)
 			return
@@ -77,18 +55,16 @@ func main() {
 
 		//fmt.Fprintf(w, "%s", rawResponse)
 
-
-		var teams []Team
+		var teams []fpl.Team
 		// Creating a nested anonymous struct to allow unmarshalling raw json response into typed structure
 		var teamsResult struct {
 			Data struct {
 				Teams struct {
-					Items []Team `json:"items"`
+					Items []fpl.Team `json:"items"`
 				} `json:"teams"`
 			} `json:"data"`
 		}
 		err = json.Unmarshal(rawResponse, &teamsResult)
-
 		if err != nil {
 			fmt.Println("JSON Unmarshal error: ", err)
 			return
@@ -98,11 +74,10 @@ func main() {
 
 		teams = teamsResult.Data.Teams.Items
 
-
 		// Set response type and encode it as json
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(teams)
-    })
+	})
 
 	http.HandleFunc("/current-gameweek", func(w http.ResponseWriter, r *http.Request) {
 		graphQLQuery := `{"query":"{ events(where: { is_current: { eq: true } }) { items { id name deadline_time most_selected { web_name } top_element { web_name } } } }"}`
@@ -114,7 +89,6 @@ func main() {
 			"https://fpl-api-6h0d.onrender.com/graphql",
 			bytes.NewBufferString(graphQLQuery),
 		)
-
 		if err != nil {
 			fmt.Println("Error creating GraphQL request: ", err)
 			return
@@ -124,7 +98,6 @@ func main() {
 		req.Header.Set("Content-Type", "application/json")
 		client := &http.Client{}
 		response, err := client.Do(req)
-
 		if err != nil {
 			fmt.Println("Error making GraphQL request: ", err)
 			return
@@ -142,17 +115,16 @@ func main() {
 			fmt.Fprintln(w, err)
 		}
 
-		var currentGameweek GameWeek
+		var currentGameweek fpl.GameWeek
 		// Creating a nested anonymous struct to allow unmarshalling raw json response into typed structure
 		var eventResult struct {
 			Data struct {
 				Events struct {
-					Items []GameWeek `json:"items"`
+					Items []fpl.GameWeek `json:"items"`
 				} `json:"events"`
 			} `json:"data"`
 		}
 		err = json.Unmarshal(rawResponse, &eventResult)
-
 		if err != nil {
 			fmt.Println("JSON Unmarshal error: ", err)
 			return
@@ -160,12 +132,10 @@ func main() {
 
 		currentGameweek = eventResult.Data.Events.Items[0]
 
-
 		// Set response type and encode it as json
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(currentGameweek)
-    })
-
+	})
 
 	http.HandleFunc("/manager/{id}", func(w http.ResponseWriter, r *http.Request) {
 		managerID := r.PathValue("id")
@@ -177,7 +147,6 @@ func main() {
 
 		// Unofficial FPL GraphQL does not support fetching the squad data so here we are using the official API
 		req, err := http.NewRequestWithContext(r.Context(), "GET", url, nil)
-
 		if err != nil {
 			fmt.Println("Error creating FPL API request: ", err)
 			return
@@ -185,7 +154,6 @@ func main() {
 
 		client := &http.Client{}
 		response, err := client.Do(req)
-
 		if err != nil {
 			fmt.Println("Error making FPL API request: ", err)
 			return
@@ -208,7 +176,7 @@ func main() {
 		w.Write(rawResponse)
 	})
 
-	http.HandleFunc("/player/{id}", handlers.Player);
+	http.HandleFunc("/player/{id}", handlers.Player)
 
 	http.ListenAndServe(":8080", nil)
 }
