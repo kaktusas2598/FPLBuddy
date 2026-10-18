@@ -1,3 +1,4 @@
+// Package handlers implements the HTTP endpoints exposed by FPLBuddy.
 package handlers
 
 import (
