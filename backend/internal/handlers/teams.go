@@ -11,14 +11,13 @@ import (
 func Teams(w http.ResponseWriter, r *http.Request)  {
 	teams, err := fpl.GetTeams(r.Context())
 	if err != nil {
-		// TODO: improve error handling here, could be all kinds of errors
-		//http.Error(w, "Errors f", http.StatusNotFound)
+		http.Error(w, "Failed fetching the teams", http.StatusInternalServerError)
 		return
 	}
 
 	w.Header().Set("Content-Type", "application/json")
 	if err := json.NewEncoder(w).Encode(teams); err != nil {
 		log.Printf("Failed to encode teams: %v", err)
-		//http.Error(w, "Player Not Found", http.StatusInternalServerError)
+		http.Error(w, "Failed to encode the teams", http.StatusInternalServerError)
 	}
 }

@@ -8,17 +8,17 @@ import (
 	"github.com/kaktusas2598/FPLBuddy/backend/internal/fpl"
 )
 
+// CurrentGameWeek handles requests for the current gameweek information
 func CurrentGameWeek(w http.ResponseWriter, r *http.Request)  {
 	currentGameWeek, err := fpl.GetCurrentGameweek(r.Context())
 	if err != nil {
-		// TODO: improve error handling here, could be all kinds of errors
-		//http.Error(w, "Errors f", http.StatusNotFound)
+		http.Error(w, "Failed fetching the current gameweek", http.StatusInternalServerError)
 		return
 	}
 
 	w.Header().Set("Content-Type", "application/json")
 	if err := json.NewEncoder(w).Encode(currentGameWeek); err != nil {
 		log.Printf("Failed to encode the current gameweek: %v", err)
-		//http.Error(w, "Player Not Found", http.StatusInternalServerError)
+		http.Error(w, "Failed to encode the current gameweek", http.StatusInternalServerError)
 	}
 }

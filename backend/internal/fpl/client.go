@@ -58,7 +58,6 @@ func GetPlayer(ctx context.Context, id int) (Player, error) {
 
 // GetTeams Uses GraphQL unofficial API to fetch teams, experimental
 func GetTeams(ctx context.Context) ([]Team, error) {
-	// We define a go string and then use Unmarshal to store it in json object
 	graphQLQuery := `{"query":"{ teams { items { id name short_name code } } }"}`
 
 	// Creating POST request with graphql query as a body
