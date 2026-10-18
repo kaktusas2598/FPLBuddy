@@ -13,6 +13,18 @@ type Team struct {
 	ID           int    `json:"id"`
 	Name         string `json:"name"`
 	ShortName    string `json:"short_name"`
+	Code		 int    `json:"code"` // Matches to SVG path from official FPL API to extract the logo
+}
+
+type Player struct {
+    WebName string `json:"web_name"`
+}
+
+type GameWeek struct {
+	Name         string `json:"name"`
+	DeadlineTime string `json:"deadline_time"`
+	MostPoints   Player `json:"top_element"`
+	MostSelected Player `json:"most_selected"`
 }
 
 func main() {
@@ -26,7 +38,7 @@ func main() {
 
 	http.HandleFunc("/teams", func(w http.ResponseWriter, r *http.Request) {
 		// We define a go string and then use Unmarshal to store it in json object
-		graphQLQuery := `{"query":"{ teams { items { id name short_name } } }"}`
+		graphQLQuery := `{"query":"{ teams { items { id name short_name code } } }"}`
 
 		// Creating POST request with graphql query as a body
 		req, err := http.NewRequestWithContext(
@@ -91,6 +103,69 @@ func main() {
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(teams)
     })
+
+	http.HandleFunc("/current-gameweek", func(w http.ResponseWriter, r *http.Request) {
+		graphQLQuery := `{"query":"{ events(where: { is_current: { eq: true } }) { items { name deadline_time most_selected { web_name } top_element { web_name } } } }"}`
+
+		// Creating POST request with graphql query as a body
+		req, err := http.NewRequestWithContext(
+			r.Context(),
+			"POST",
+			"https://fpl-api-6h0d.onrender.com/graphql",
+			bytes.NewBufferString(graphQLQuery),
+		)
+
+		if err != nil {
+			fmt.Println("Error creating GraphQL request: ", err)
+			return
+		}
+
+		// Actually sending off the request
+		req.Header.Set("Content-Type", "application/json")
+		client := &http.Client{}
+		response, err := client.Do(req)
+
+		if err != nil {
+			fmt.Println("Error making GraphQL request: ", err)
+			return
+		}
+
+		defer response.Body.Close()
+
+		if response.StatusCode != 200 {
+			fmt.Println("response status: ", response.StatusCode)
+			return
+		}
+
+		rawResponse, err := io.ReadAll(response.Body)
+		if err != nil {
+			fmt.Fprintln(w, err)
+		}
+
+		var currentGameweek GameWeek
+		// Creating a nested anonymous struct to allow unmarshalling raw json response into typed structure
+		var eventResult struct {
+			Data struct {
+				Events struct {
+					Items []GameWeek `json:"items"`
+				} `json:"events"`
+			} `json:"data"`
+		}
+		err = json.Unmarshal(rawResponse, &eventResult)
+
+		if err != nil {
+			fmt.Println("JSON Unmarshal error: ", err)
+			return
+		}
+
+		currentGameweek = eventResult.Data.Events.Items[0]
+
+
+		// Set response type and encode it as json
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(currentGameweek)
+    })
+
 
 	http.HandleFunc("/manager/{id}", func(w http.ResponseWriter, r *http.Request) {
 		managerID := r.PathValue("id")
