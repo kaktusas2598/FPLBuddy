@@ -6,7 +6,9 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"strconv"
+
+	"github.com/kaktusas2598/FPLBuddy/backend/internal/fpl"
+	"github.com/kaktusas2598/FPLBuddy/backend/internal/handlers"
 )
 
 // FPL Team struct
@@ -17,18 +19,12 @@ type Team struct {
 	Code		 int    `json:"code"` // Matches to SVG path from official FPL API to extract the logo
 }
 
-type Player struct {
-	ID      int	   `json:"id"`
-    WebName string `json:"web_name"`
-    Team    int    `json:"team"`
-}
-
 type GameWeek struct {
 	ID           int 	`json:"id"`
 	Name         string `json:"name"`
 	DeadlineTime string `json:"deadline_time"`
-	MostPoints   Player `json:"top_element"`
-	MostSelected Player `json:"most_selected"`
+	MostPoints   fpl.Player `json:"top_element"`
+	MostSelected fpl.Player `json:"most_selected"`
 }
 
 func main() {
@@ -212,58 +208,7 @@ func main() {
 		w.Write(rawResponse)
 	})
 
-	// For example, Haaland is 411th element
-	http.HandleFunc("/player/{id}", func(w http.ResponseWriter, r *http.Request) {
-		playerID, err := strconv.Atoi(r.PathValue("id"))
-		if err != nil {
-			http.Error(w, "Invalid player ID", http.StatusInternalServerError)
-			return
-		}
-
-
-		req, err := http.NewRequestWithContext(r.Context(), "GET", "https://fantasy.premierleague.com/api/elements/", nil)
-
-		if err != nil {
-			fmt.Println("Error creating FPL API request: ", err)
-			return
-		}
-
-		client := &http.Client{}
-		response, err := client.Do(req)
-
-		if err != nil {
-			fmt.Println("Error making FPL API request: ", err)
-			return
-		}
-
-		defer response.Body.Close()
-
-		if response.StatusCode != 200 {
-			fmt.Println("response status: ", response.StatusCode)
-			return
-		}
-
-		var players []Player
-
-		err = json.NewDecoder(response.Body).Decode(&players)
-		if err != nil {
-			http.Error(w, "Failed to decode players response", http.StatusInternalServerError)
-			return
-		}
-
-		for _, player := range players {
-			if player.ID == playerID {
-				w.Header().Set("Content-Type", "application/json")
-				json.NewEncoder(w).Encode(player)
-				return
-			}
-		}
-
-		http.Error(w, "Failed to find the player", http.StatusInternalServerError)
-	})
-
-
-
+	http.HandleFunc("/player/{id}", handlers.Player);
 
 	http.ListenAndServe(":8080", nil)
 }
