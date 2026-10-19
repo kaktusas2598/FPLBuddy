@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/kaktusas2598/FPLBuddy/backend/internal/handlers"
@@ -20,5 +21,5 @@ func main() {
 	http.HandleFunc("/manager/{id}", handlers.Manager)
 	http.HandleFunc("/player/{id}", handlers.Player)
 
-	http.ListenAndServe(":8080", nil)
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }

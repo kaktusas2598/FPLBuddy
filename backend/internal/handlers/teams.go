@@ -8,6 +8,7 @@ import (
 	"github.com/kaktusas2598/FPLBuddy/backend/internal/fpl"
 )
 
+// Teams handle request from the frontend to get all prem teams
 func Teams(w http.ResponseWriter, r *http.Request)  {
 	teams, err := fpl.GetTeams(r.Context())
 	if err != nil {
@@ -19,6 +20,5 @@ func Teams(w http.ResponseWriter, r *http.Request)  {
 	w.Header().Set("Content-Type", "application/json")
 	if err := json.NewEncoder(w).Encode(teams); err != nil {
 		log.Printf("Failed to encode teams: %v", err)
-		http.Error(w, "Failed to encode the teams", http.StatusInternalServerError)
 	}
 }

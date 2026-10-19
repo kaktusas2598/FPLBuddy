@@ -10,7 +10,7 @@ import (
 	"github.com/kaktusas2598/FPLBuddy/backend/internal/fpl"
 )
 
-// Player handles requests for the requested prem player information
+// Player handles requests from the frontend for the requested prem player information
 func Player(w http.ResponseWriter, r *http.Request)  {
     // Parse and validate the player ID
 	playerID, err := strconv.Atoi(r.PathValue("id"))

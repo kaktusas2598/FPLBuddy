@@ -9,7 +9,7 @@ import (
 	"github.com/kaktusas2598/FPLBuddy/backend/internal/fpl"
 )
 
-// Manager handles requests for the requested FPL manager information
+// Manager handles requests from frontend for the requested FPL manager information
 func Manager(w http.ResponseWriter, r *http.Request)  {
     // Parse and validate the manager/squad ID
 	managerID, err := strconv.Atoi(r.PathValue("id"))

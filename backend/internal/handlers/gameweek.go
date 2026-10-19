@@ -8,7 +8,7 @@ import (
 	"github.com/kaktusas2598/FPLBuddy/backend/internal/fpl"
 )
 
-// CurrentGameWeek handles requests for the current gameweek information
+// CurrentGameWeek handles requests from frontend for the current gameweek information
 func CurrentGameWeek(w http.ResponseWriter, r *http.Request)  {
 	currentGameWeek, err := fpl.GetCurrentGameweek(r.Context())
 	if err != nil {
