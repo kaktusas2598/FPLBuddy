@@ -3,6 +3,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -20,6 +21,7 @@ func Player(w http.ResponseWriter, r *http.Request)  {
 
 	player, err := fpl.GetPlayer(r.Context(), playerID)
 	if err != nil {
+		log.Printf("failed to fetch player %d: %v", playerID, err)
 		http.Error(w, "Player Not Found", http.StatusNotFound)
 		return
 	}

@@ -12,6 +12,7 @@ import (
 func CurrentGameWeek(w http.ResponseWriter, r *http.Request)  {
 	currentGameWeek, err := fpl.GetCurrentGameweek(r.Context())
 	if err != nil {
+		log.Printf("failed to fetch the current gameweek: %v", err)
 		http.Error(w, "Failed fetching the current gameweek", http.StatusInternalServerError)
 		return
 	}

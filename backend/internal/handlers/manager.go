@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -19,6 +20,7 @@ func Manager(w http.ResponseWriter, r *http.Request)  {
 
 	manager, err := fpl.GetManager(r.Context(), managerID)
 	if err != nil {
+		log.Printf("failed to fetch manager %d: %v", managerID, err)
 		http.Error(w, "Manager Not Found", http.StatusNotFound)
 		return
 	}

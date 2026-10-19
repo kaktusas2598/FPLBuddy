@@ -11,6 +11,7 @@ import (
 func Teams(w http.ResponseWriter, r *http.Request)  {
 	teams, err := fpl.GetTeams(r.Context())
 	if err != nil {
+		log.Printf("failed to fetch the teams: %v", err)
 		http.Error(w, "Failed fetching the teams", http.StatusInternalServerError)
 		return
 	}
