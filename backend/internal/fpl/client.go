@@ -56,6 +56,37 @@ func GetPlayer(ctx context.Context, id int) (Player, error) {
 	return Player{}, fmt.Errorf("failed to find the player id %d", id)
 }
 
+// GetManager fetches the information about FPL manager which matches the provided id.
+// Returns nil in case of error or if lookup fails
+func GetManager(ctx context.Context, id int) (json.RawMessage, error) {
+
+	url := fmt.Sprintf("%sentry/%d/", baseURL, id)
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
+	if err != nil {
+		return nil, fmt.Errorf("error creating FPL API request: %w", err)
+	}
+
+	client := &http.Client{}
+	response, err := client.Do(req)
+	if err != nil {
+		return nil, fmt.Errorf("error making FPL API request: %w", err)
+	}
+
+	defer response.Body.Close()
+
+	if response.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("response status is not 200: %d", response.StatusCode)
+	}
+
+	rawResponse, err := io.ReadAll(response.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read api/entry response: %w", err)
+	}
+
+	return rawResponse, nil
+}
+
+
 // GetTeams Uses GraphQL unofficial API to fetch teams, experimental
 func GetTeams(ctx context.Context) ([]Team, error) {
 	graphQLQuery := `{"query":"{ teams { items { id name short_name code } } }"}`
