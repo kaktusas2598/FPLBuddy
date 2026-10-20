@@ -4,6 +4,7 @@ export interface Squad {
             id: number;
             web_name: string;
             team: number;
+            element_type: number;
         };
         pick: {
             element: number;
