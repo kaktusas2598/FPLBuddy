@@ -9,7 +9,7 @@ interface Manager {
     player_first_name: string;
     player_last_name: string;
     summary_overall_points: number;
-    summary_event_pounts: number;
+    summary_event_points: number;
     summary_overall_rank: number;
     summary_event_rank: number;
 }
