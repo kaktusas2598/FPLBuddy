@@ -15,13 +15,23 @@ type Team struct {
 	Code      int    `json:"code"` // Matches to SVG path from official FPL API to extract the logo
 }
 
-// GameWeek or "Event" represents a single gameweek in FPL
+// GameWeek or "Event" represents a single gameweek in FPL in FPLBuddy internal API
 type GameWeek struct {
 	ID           int    `json:"id"`
 	Name         string `json:"name"`
 	DeadlineTime string `json:"deadline_time"`
 	MostPoints   int    `json:"top_element"`
 	MostSelected int    `json:"most_selected"`
+	IsCurrent    bool   `json:"is_current"`
+}
+
+// GameWeekDetails represents single gameweek in FPL with enriched details for presentation layer in FPLBuddy
+type GameWeekDetails struct {
+	ID           int    `json:"id"`
+	Name         string `json:"name"`
+	DeadlineTime string `json:"deadline_time"`
+	MostPoints   Player `json:"top_element"`
+	MostSelected Player `json:"most_selected"`
 	IsCurrent    bool   `json:"is_current"`
 }
 
@@ -34,9 +44,20 @@ type Pick struct {
 	IsViceCaptain bool `json:"is_vice_captain"`
 }
 
+// SquadPlayer combines player/element information with manager's gameweek pick
+type SquadPlayer struct {
+	Player Player `json:"player"`
+	Pick   Pick   `json:"pick"`
+}
+
 // Squad represents selection of 15 picks/players chosen by FPL manager for a gameweek
 type Squad struct {
 	Picks []Pick `json:"picks"`
+}
+
+// SquadDetails containes enriched information about FPL manager squad selection including players details
+type SquadDetails struct {
+	Picks []SquadPlayer `json:"picks"`
 }
 
 // Manager represents individual managing FPL squad

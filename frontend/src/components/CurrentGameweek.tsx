@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react'
 
 interface GameWeek {
-  name: string;
-  most_selected: number;
-  top_element: number;
-  deadline_time: string;
+    id: number,
+    name: string;
+    most_selected: { web_name: string};
+    top_element: { web_name: string};
+    deadline_time: string;
 }
 
 function CurrentGameweek() {
@@ -43,12 +44,12 @@ function CurrentGameweek() {
                 <div className="manager-stats">
                   <div>
                     <span>Top Scoring Player</span>
-                    <strong>{currentGameweek.top_element}</strong>
+                    <strong>{currentGameweek.top_element.web_name}</strong>
                   </div>
 
                   <div>
                     <span>Most Selected Player</span>
-                    <strong>{currentGameweek.most_selected}</strong>
+                    <strong>{currentGameweek.most_selected.web_name}</strong>
                   </div>
                 </div>
               </div>
