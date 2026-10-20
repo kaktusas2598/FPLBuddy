@@ -1,5 +1,7 @@
 import { useState } from 'react'
 
+import type { Squad } from '../types.ts';
+
 import SquadPitch from './SquadPitch.tsx'
 
 interface Manager {
@@ -9,24 +11,6 @@ interface Manager {
     summary_overall_points: number;
     summary_overall_rank: number;
 }
-
-export interface Squad {
-    picks: {
-        player: {
-            id: number;
-            web_name: string;
-            team: number;
-        };
-        pick: {
-            element: number;
-            position: number;
-            multiplier: number;
-            is_captain: boolean;
-            is_vice_captain: boolean;
-        };
-    }[];
-}
-
 
 function ManagerLookup({ gameweekId }: {
     gameweekId: number | null

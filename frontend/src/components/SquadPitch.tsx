@@ -1,4 +1,4 @@
-import type { Squad } from './ManagerLookup';
+import type { Squad } from '../types.ts';
 
 function SquadPitch({ squad }: { squad: Squad}) {
 
