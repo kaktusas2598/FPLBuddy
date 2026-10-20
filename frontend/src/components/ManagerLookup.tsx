@@ -1,5 +1,7 @@
 import { useState } from 'react'
 
+import SquadPitch from './SquadPitch.tsx'
+
 interface Manager {
     name: string;
     player_first_name: string;
@@ -8,7 +10,7 @@ interface Manager {
     summary_overall_rank: number;
 }
 
-interface Squad {
+export interface Squad {
     picks: {
         player: {
             id: number;
@@ -112,21 +114,8 @@ function ManagerLookup({ gameweekId }: {
                 </div>
               </div>
             )}
-            {squad && (
-              <div className="manager-result">
-                <h2>Squad</h2>
-                <ul>
-                  {squad.picks.map(({ player, pick }) => (
-                    <li key={player.id}>
-                      {pick.position}. {player.web_name}
-                      {pick.is_captain && ' (C)'}
-                      {pick.is_vice_captain && ' (VC)'}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-    </>
+            {squad && <SquadPitch squad={squad}/>}
+        </>
     )
 }
 
