@@ -329,3 +329,46 @@ body {
         width: 28px;
     }
 }
+
+
+.squad-metric-select {
+    display: block;
+    width: fit-content;
+    max-width: 100%;
+    margin: 0 0 4px auto;
+    padding: 10px 36px 10px 14px;
+
+    background-color: #202c40;
+    color: #e2e8f0;
+    border: 1px solid #40516b;
+    border-radius: 8px;
+
+    font: inherit;
+    font-size: 0.85rem;
+    cursor: pointer;
+
+    color-scheme: dark;
+}
+
+.squad-metric-select:hover {
+    border-color: #7186a6;
+}
+
+.squad-metric-select:focus-visible {
+    outline: 2px solid #b44bdb;
+    outline-offset: 2px;
+}
+
+.squad-metric-select option {
+    background-color: #202c40;
+    color: #e2e8f0;
+}
+
+@media (max-width: 600px) {
+    .squad-metric-select {
+        margin-right: 4px;
+        padding: 8px 12px;
+        font-size: 0.8rem;
+    }
+}
+

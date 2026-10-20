@@ -1,7 +1,38 @@
 import type { Squad } from '../types.ts';
-type SquadPick = Squad['picks'][number];
+import type { SquadMetric } from '../types.ts';
 
-function SquadPlayer({ player, pick }: SquadPick) {
+// Custom type for this component only
+type SquadPick = Squad['picks'][number];
+// Custom type + extra props passed into this component
+type SquadPlayerProps = SquadPick & {
+    selectedMetric: SquadMetric;
+}
+
+function SquadPlayer({ player, pick, selectedMetric }: SquadPlayerProps) {
+
+    let detailsValue: string | number;
+    switch (selectedMetric) {
+        case 'points':
+            detailsValue = player.event_points * (pick.multiplier || 1);
+            break;
+        case 'price':
+            detailsValue = `£${(player.now_cost / 10).toFixed(1)}m`;
+            break;
+        case 'price_change':
+            detailsValue = `${player.cost_change_start > 0 ? '+' : ''}£${(player.cost_change_start / 10).toFixed(1)}m`;
+            break;
+        case 'form':
+            detailsValue = player.form;
+            break;
+        case 'xg':
+            detailsValue = player.expected_goals;
+            break;
+        case 'ownership':
+            detailsValue = player.selected_by_percent + '%';
+            break;
+        default:
+            detailsValue = 'N/A';
+    }
 
     return (
         <div className="squad-player">
@@ -17,7 +48,7 @@ function SquadPlayer({ player, pick }: SquadPick) {
                 {pick.is_vice_captain && ' (VC)'}
             </span>
             <span className="squad-player-subdetails">
-                {player.event_points * (pick.multiplier || 1)}
+                {detailsValue}
             </span>
         </div>
     );

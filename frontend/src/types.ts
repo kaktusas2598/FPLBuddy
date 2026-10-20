@@ -10,7 +10,7 @@ export interface Squad {
             now_cost: number; // Divide by 10
             form: string;
             selected_by_percent: string;
-            cost_change_event: number;
+            cost_change_start: number;
             expected_goals: string;
         };
         pick: {
@@ -23,3 +23,4 @@ export interface Squad {
     }[];
 }
 
+export type SquadMetric = 'points' | 'price' | 'price_change' | 'form' | 'xg' | 'ownership'
