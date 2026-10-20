@@ -61,8 +61,8 @@ function App() {
                 </header>
 
                 <div className="dashboard-top">
-                    <CurrentGameweek currentGameweek={currentGameweek}/>
                     <ManagerLookup gameweekId={currentGameweek?.id ?? null} setSquad={setSquad}/>
+                    <CurrentGameweek currentGameweek={currentGameweek}/>
                 </div>
 
                 {squad && <SquadPitch squad={squad}/>}
