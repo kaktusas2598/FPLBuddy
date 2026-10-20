@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react'
 
 interface GameWeek {
   name: string;
-  most_selected: { web_name: string};
-  top_element: { web_name: string};
+  most_selected: number;
+  top_element: number;
   deadline_time: string;
 }
 
@@ -33,7 +33,7 @@ function CurrentGameweek() {
                 <h2>{currentGameweek.name}</h2>
 
                     <p>
-                        Next deadline is: {new Date(Number(currentGameweek.deadline_time)).toLocaleString('en-GB', {
+                        Next deadline is: {new Date(currentGameweek.deadline_time).toLocaleString('en-GB', {
                             dateStyle: 'medium',
                             timeStyle: 'short',
                             timeZone: 'Europe/London'
@@ -43,12 +43,12 @@ function CurrentGameweek() {
                 <div className="manager-stats">
                   <div>
                     <span>Top Scoring Player</span>
-                    <strong>{currentGameweek.top_element.web_name}</strong>
+                    <strong>{currentGameweek.top_element}</strong>
                   </div>
 
                   <div>
                     <span>Most Selected Player</span>
-                    <strong>{currentGameweek.most_selected.web_name}</strong>
+                    <strong>{currentGameweek.most_selected}</strong>
                   </div>
                 </div>
               </div>

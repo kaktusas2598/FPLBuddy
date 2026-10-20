@@ -15,13 +15,14 @@ type Team struct {
 	Code      int    `json:"code"` // Matches to SVG path from official FPL API to extract the logo
 }
 
-// GameWeek TODO: this is currently based on GraphQL response, so might need changing
+// GameWeek or "Event" represents a single gameweek in FPL
 type GameWeek struct {
 	ID           int    `json:"id"`
 	Name         string `json:"name"`
 	DeadlineTime string `json:"deadline_time"`
-	MostPoints   Player `json:"top_element"`
-	MostSelected Player `json:"most_selected"`
+	MostPoints   int    `json:"top_element"`
+	MostSelected int    `json:"most_selected"`
+	IsCurrent    bool   `json:"is_current"`
 }
 
 // Pick represents prem player picked by a manager for their squad
