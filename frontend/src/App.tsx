@@ -43,34 +43,31 @@ function App() {
         fetchCurrentGameweek();
     }, []);
 
-  // This HTML like syntax is JSX or for typescript its TSX
-  return (
-    <>
-      <main className="app-main">
-          <section id="center">
-            <div className="hero">
-              <img src={premierLeagueLogo} className="base" width="170" height="179" alt="" />
-            </div>
-            <div>
-              <h1>FPL Buddy</h1>
-              <p>Fantasy Premier League Assistant</p>
-          </div>
-          </section>
+    // This HTML like syntax is JSX or for typescript its TSX
+    return (
+        <>
+            <main className="app-main">
+                <header className="app-header">
+                    <img src={premierLeagueLogo} alt="Premier League" />
+                    <div>
+                        <h1>FPL Buddy</h1>
+                        <p>Fantasy Premier League Assistant</p>
+                    </div>
+                </header>
 
-          <CurrentGameweek currentGameweek={currentGameweek}/>
-          <ManagerLookup gameweekId={currentGameweek?.id ?? null}/>
+                <CurrentGameweek currentGameweek={currentGameweek}/>
+                <ManagerLookup gameweekId={currentGameweek?.id ?? null}/>
+            </main>
 
-      </main>
+            <footer className="app-footer">
+                <span>© {new Date().getFullYear()} Nerijus Vilčinskas</span>
 
-      <footer className="app-footer">
-          <span>© {new Date().getFullYear()} Nerijus Vilčinskas</span>
-
-          <span className="server-status">
-          Backend: <strong>{status}</strong>
-          </span>
-      </footer>
-    </>
-  )
+                <span className="server-status">
+                    Backend: <strong>{status}</strong>
+                </span>
+            </footer>
+        </>
+    )
 }
 
 export default App
