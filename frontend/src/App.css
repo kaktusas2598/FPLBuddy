@@ -21,20 +21,6 @@
     font-size: 0.85rem;
 }
 
-/* Team Grid Rules */
-.teams-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 16px;
-  padding: 16px;
-}
-
-.team-card {
-  padding: 16px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-}
-
 /* Footer Rules */
 html,
 body,
@@ -74,21 +60,6 @@ body {
   color: #aab4c3;
 
   font-size: 0.85rem;
-}
-
-.footer-links {
-  display: flex;
-  gap: 20px;
-}
-
-.footer-links a {
-  color: #aab4c3;
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-.footer-links a:hover {
-  color: #ffffff;
 }
 
 .server-status strong {
