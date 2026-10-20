@@ -20,6 +20,13 @@ function SquadPitch({ squad }: { squad: Squad}) {
                             {player.web_name}
                             {pick.is_captain && ' (C)'}
                             {pick.is_vice_captain && ' (VC)'}
+                            <img
+                                src={`https://resources.premierleague.com/premierleague25/badges/${player.team_code}.svg`}
+                                alt={`${player.team} badge`}
+                                width="48"
+                                height="48"
+                            />
+
                         </div>
                     ))}
                 </div>
