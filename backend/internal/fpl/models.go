@@ -42,6 +42,7 @@ type Pick struct {
 	Multiplier    int  `json:"multiplier"` // 0 if benched
 	IsCaptain     bool `json:"is_captain"`
 	IsViceCaptain bool `json:"is_vice_captain"`
+	ElementType   int  `json:"element_type"`
 }
 
 // SquadPlayer combines player/element information with manager's gameweek pick

@@ -7,6 +7,8 @@ import (
 	"net/http"
 )
 
+// GetCurrentGameweek fetches the information about current gameweek
+// Returns a zero-value GameWeekDetails in case of error or if lookup fails
 func GetCurrentGameweek(ctx context.Context) (GameWeekDetails, error) {
 
 	data, err := doRequest(ctx, http.MethodGet, baseURL + "bootstrap-static", nil)

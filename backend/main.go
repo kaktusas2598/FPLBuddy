@@ -21,8 +21,7 @@ func main() {
 
 	// FPL manager and squads
 	http.HandleFunc("/manager/{id}", handlers.Manager)
-	// TODO:
-	//http.HandleFunc("/manager/{id}/squad/{gameweek}", handlers.Squad)
+	http.HandleFunc("/manager/{manager_id}/squad/{gameweek_id}", handlers.Squad)
 
 	// Premier league players
 	http.HandleFunc("/player/{id}", handlers.Player)
