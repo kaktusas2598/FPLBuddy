@@ -2,6 +2,7 @@ import type { Squad } from '../types.ts';
 type SquadPick = Squad['picks'][number];
 
 function SquadPlayer({ player, pick }: SquadPick) {
+
     return (
         <div className="squad-player">
             <img
@@ -14,6 +15,9 @@ function SquadPlayer({ player, pick }: SquadPick) {
                 {player.web_name}
                 {pick.is_captain && ' (C)'}
                 {pick.is_vice_captain && ' (VC)'}
+            </span>
+            <span className="squad-player-subdetails">
+                {player.event_points * (pick.multiplier || 1)}
             </span>
         </div>
     );

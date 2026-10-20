@@ -9,7 +9,9 @@ interface Manager {
     player_first_name: string;
     player_last_name: string;
     summary_overall_points: number;
+    summary_event_pounts: number;
     summary_overall_rank: number;
+    summary_event_rank: number;
 }
 
 function ManagerLookup({ gameweekId }: {
@@ -58,45 +60,56 @@ function ManagerLookup({ gameweekId }: {
     return (
         <>
             <form onSubmit={handleSubmit} className="manager-form">
-              <label htmlFor="manager-id">Find your FPL team</label>
+                <label htmlFor="manager-id">Find your FPL team</label>
 
-              <div className="manager-input-group">
-                <input
-                  id="manager-id"
-                  type="number"
-                  min="1"
-                  placeholder="e.g. 1894731"
-                  value={managerId}
-                  onChange={(e) => setManagerId(e.target.value)}
-                  required
-                />
+                <div className="manager-input-group">
+                    <input
+                        id="manager-id"
+                        type="number"
+                        min="1"
+                        placeholder="e.g. 1894731"
+                        value={managerId}
+                        onChange={(e) => setManagerId(e.target.value)}
+                        required
+                    />
 
-                <button type="submit" disabled={loading || gameweekId === null}>
-                  {loading ? 'Searching...' : 'Find Team'}
-                </button>
-              </div>
+                    <button type="submit" disabled={loading || gameweekId === null}>
+                        {loading ? 'Searching...' : 'Find Team'}
+                    </button>
+                </div>
             </form>
 
             {manager && (
-              <div className="manager-result">
-                <h2>{manager.name}</h2>
+                <div className="manager-result">
+                    <h2>{manager.name}</h2>
 
-                <p>
-                  Manager: {manager.player_first_name} {manager.player_last_name}
-                </p>
+                    <p>
+                        Manager: {manager.player_first_name} {manager.player_last_name}
+                    </p>
 
-                <div className="manager-stats">
-                  <div>
-                    <span>Overall points</span>
-                    <strong>{manager.summary_overall_points.toLocaleString()}</strong>
-                  </div>
+                    <div className="manager-stats">
+                        <div>
+                            <span>GW points</span>
+                            <strong>{manager.summary_event_points.toLocaleString()}</strong>
+                        </div>
 
-                  <div>
-                    <span>Overall rank</span>
-                    <strong>{manager.summary_overall_rank.toLocaleString()}</strong>
-                  </div>
+                        <div>
+                            <span>Overall points</span>
+                            <strong>{manager.summary_overall_points.toLocaleString()}</strong>
+                        </div>
+
+                        <div>
+                            <span>Overall rank</span>
+                            <strong>{manager.summary_overall_rank.toLocaleString()}</strong>
+                        </div>
+
+                        <div>
+                            <span>GW rank</span>
+                            <strong>{manager.summary_event_rank.toLocaleString()}</strong>
+                        </div>
+
+                    </div>
                 </div>
-              </div>
             )}
             {squad && <SquadPitch squad={squad}/>}
         </>
