@@ -19,8 +19,6 @@ function App() {
   // Creates status variable and setStatus func to update it and tell React to render it
   const [status, setStatus] = useState<string>("Checking..")
 
-
-  const [players, setPlayers] = useState<string>("");
   const [teams, setTeams] = useState<Team[]>([]);
 
   useEffect(() => {
@@ -31,13 +29,6 @@ function App() {
           setStatus(healthResult)
       }
 
-      async function getPlayers() {
-          const playersResponse = await fetch('/api/players');
-          const playersResult = await playersResponse.text();
-
-          setPlayers(playersResult)
-      }
-
       async function getTeams() {
           const teamsResponse = await fetch('/api/teams');
           const teamsResult = await teamsResponse.json();
@@ -45,10 +36,7 @@ function App() {
           setTeams(teamsResult)
       }
 
-
-
       checkServerHealth()
-      getPlayers()
       getTeams()
   }, []);
 
