@@ -14,31 +14,50 @@ interface Team {
     short_name: string;
 }
 
+export interface GameWeek {
+    id: number,
+    name: string;
+    most_selected: { web_name: string};
+    top_element: { web_name: string};
+    deadline_time: string;
+}
+
 // App() is a React component
 function App() {
-  // Creates status variable and setStatus func to update it and tell React to render it
-  const [status, setStatus] = useState<string>("Checking..")
+    const [status, setStatus] = useState<string>("Checking..")
+    const [teams, setTeams] = useState<Team[]>([]);
+    const [currentGameweek, setCurrentGameweek] = useState<GameWeek | null>(null);
 
-  const [teams, setTeams] = useState<Team[]>([]);
+    useEffect(() => {
+        async function checkServerHealth() {
+            const healthResponse = await fetch('/api/health');
+            const healthResult = await healthResponse.text();
 
-  useEffect(() => {
-      async function checkServerHealth() {
-          const healthResponse = await fetch('/api/health');
-          const healthResult = await healthResponse.text();
+            setStatus(healthResult)
+        }
 
-          setStatus(healthResult)
-      }
+        async function getTeams() {
+            const teamsResponse = await fetch('/api/teams');
+            const teamsResult = await teamsResponse.json();
 
-      async function getTeams() {
-          const teamsResponse = await fetch('/api/teams');
-          const teamsResult = await teamsResponse.json();
+            setTeams(teamsResult)
+        }
 
-          setTeams(teamsResult)
-      }
+        async function fetchCurrentGameweek() {
+            const currentGameweekResponse = await fetch('/api/current-gameweek');
+            if (!currentGameweekResponse.ok) {
+                throw new Error(`Current GameWeek lookup failed: ${currentGameweekResponse.status}`);
+            }
 
-      checkServerHealth()
-      getTeams()
-  }, []);
+            const currentGameweekResult = await currentGameweekResponse.json();
+            setCurrentGameweek(currentGameweekResult)
+            console.log(currentGameweekResult);
+        }
+
+        checkServerHealth()
+        getTeams()
+        fetchCurrentGameweek();
+    }, []);
 
   // This HTML like syntax is JSX or for typescript its TSX
   return (
@@ -54,8 +73,8 @@ function App() {
           </div>
           </section>
 
-          <CurrentGameweek />
-          <ManagerLookup />
+          <CurrentGameweek currentGameweek={currentGameweek}/>
+          <ManagerLookup gameweekId={currentGameweek?.id ?? null}/>
 
           <p>Premier League Teams</p>
           <div className="teams-grid">

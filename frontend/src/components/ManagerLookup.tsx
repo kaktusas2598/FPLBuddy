@@ -1,16 +1,37 @@
 import { useState } from 'react'
 
 interface Manager {
-  name: string;
-  player_first_name: string;
-  player_last_name: string;
-  summary_overall_points: number;
-  summary_overall_rank: number;
+    name: string;
+    player_first_name: string;
+    player_last_name: string;
+    summary_overall_points: number;
+    summary_overall_rank: number;
 }
 
-function ManagerLookup() {
+interface Squad {
+    picks: {
+        player: {
+            id: number;
+            web_name: string;
+            team: number;
+        };
+        pick: {
+            element: number;
+            position: number;
+            multiplier: number;
+            is_captain: boolean;
+            is_vice_captain: boolean;
+        };
+    }[];
+}
+
+
+function ManagerLookup({ gameweekId }: {
+    gameweekId: number | null
+}) {
     const [managerId, setManagerId] = useState('');
     const [manager, setManager] = useState<Manager | null>(null);
+    const [squad, setSquad] = useState<Squad | null>(null);
     const [loading, setLoading] = useState(false);
 
     async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
@@ -18,6 +39,7 @@ function ManagerLookup() {
 
         setLoading(true);
         setManager(null);
+        setSquad(null);
 
         try {
             const managerResponse = await fetch('/api/manager/' + managerId);
@@ -28,8 +50,20 @@ function ManagerLookup() {
             const managerResult = await managerResponse.json();
             setManager(managerResult)
             console.log(managerResult);
+
+            if (gameweekId == null) {
+                throw new Error('Current gameweek is not available');
+            }
+            const squadResponse = await fetch(`/api/manager/${managerId}/squad/${gameweekId}`);
+            if (!squadResponse.ok) {
+                throw new Error(`Squad lookup failed: ${squadResponse.status}`);
+            }
+
+            const squadResult = await squadResponse.json();
+            setSquad(squadResult);
+            console.log(squadResult);
         } catch (error) {
-            console.log('Failed to fetch manager:', error);
+            console.log('Failed to fetch manager or squad:', error);
         } finally {
             setLoading(false);
         }
@@ -51,7 +85,7 @@ function ManagerLookup() {
                   required
                 />
 
-                <button type="submit" disabled={loading}>
+                <button type="submit" disabled={loading || gameweekId === null}>
                   {loading ? 'Searching...' : 'Find Team'}
                 </button>
               </div>
@@ -76,6 +110,20 @@ function ManagerLookup() {
                     <strong>{manager.summary_overall_rank.toLocaleString()}</strong>
                   </div>
                 </div>
+              </div>
+            )}
+            {squad && (
+              <div className="manager-result">
+                <h2>Squad</h2>
+                <ul>
+                  {squad.picks.map(({ player, pick }) => (
+                    <li key={player.id}>
+                      {pick.position}. {player.web_name}
+                      {pick.is_captain && ' (C)'}
+                      {pick.is_vice_captain && ' (VC)'}
+                    </li>
+                  ))}
+                </ul>
               </div>
             )}
     </>

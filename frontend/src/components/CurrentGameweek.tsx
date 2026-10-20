@@ -1,31 +1,8 @@
-import { useState, useEffect } from 'react'
+import type { GameWeek } from '../App';
 
-interface GameWeek {
-    id: number,
-    name: string;
-    most_selected: { web_name: string};
-    top_element: { web_name: string};
-    deadline_time: string;
-}
-
-function CurrentGameweek() {
-    const [currentGameweek, setCurrentGameweek] = useState<GameWeek | null>(null);
-
-    useEffect(() => {
-        async function fetchCurrentGameweek() {
-            const currentGameweekResponse = await fetch('/api/current-gameweek');
-            if (!currentGameweekResponse.ok) {
-                throw new Error(`Current GameWeek lookup failed: ${currentGameweekResponse.status}`);
-            }
-
-            const currentGameweekResult = await currentGameweekResponse.json();
-            setCurrentGameweek(currentGameweekResult)
-            console.log(currentGameweekResult);
-        }
-
-        fetchCurrentGameweek();
-
-    }, []);
+function CurrentGameweek({ currentGameweek }: {
+    currentGameweek: GameWeek | null
+}) {
 
     return (
         <>
