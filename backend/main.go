@@ -14,11 +14,17 @@ func main() {
 	})
 
 	// GraphQL handlers - experimental usage
-	http.HandleFunc("/current-gameweek", handlers.CurrentGameWeek)
 	http.HandleFunc("/teams", handlers.Teams)
 
-	// Official FPL API based handlers
+	// FPL Gameweek Information
+	http.HandleFunc("/current-gameweek", handlers.CurrentGameWeek)
+
+	// FPL manager and squads
 	http.HandleFunc("/manager/{id}", handlers.Manager)
+	// TODO:
+	//http.HandleFunc("/manager/{id}/squad/{gameweek}", handlers.Squad)
+
+	// Premier league players
 	http.HandleFunc("/player/{id}", handlers.Player)
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
