@@ -13,9 +13,6 @@ func main() {
 		fmt.Fprintln(w, "OK")
 	})
 
-	// GraphQL handlers - experimental usage
-	http.HandleFunc("/teams", handlers.Teams)
-
 	// FPL Gameweek Information
 	http.HandleFunc("/current-gameweek", handlers.CurrentGameWeek)
 
