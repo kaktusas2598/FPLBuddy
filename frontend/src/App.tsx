@@ -6,6 +6,10 @@ import './App.css'
 // Custom components
 import ManagerLookup from './components/ManagerLookup.tsx'
 import CurrentGameweek from './components/CurrentGameweek.tsx'
+import SquadPitch from './components/SquadPitch.tsx'
+
+// Custom types
+import type { Squad } from './types.ts';
 
 export interface GameWeek {
     id: number,
@@ -19,6 +23,7 @@ export interface GameWeek {
 function App() {
     const [status, setStatus] = useState<string>("Checking..")
     const [currentGameweek, setCurrentGameweek] = useState<GameWeek | null>(null);
+    const [squad, setSquad] = useState<Squad | null>(null);
 
     useEffect(() => {
         async function checkServerHealth() {
@@ -55,8 +60,12 @@ function App() {
                     </div>
                 </header>
 
-                <CurrentGameweek currentGameweek={currentGameweek}/>
-                <ManagerLookup gameweekId={currentGameweek?.id ?? null}/>
+                <div className="dashboard-top">
+                    <CurrentGameweek currentGameweek={currentGameweek}/>
+                    <ManagerLookup gameweekId={currentGameweek?.id ?? null} setSquad={setSquad}/>
+                </div>
+
+                {squad && <SquadPitch squad={squad}/>}
             </main>
 
             <footer className="app-footer">

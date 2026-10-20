@@ -2,8 +2,6 @@ import { useState } from 'react'
 
 import type { Squad } from '../types.ts';
 
-import SquadPitch from './SquadPitch.tsx'
-
 interface Manager {
     name: string;
     player_first_name: string;
@@ -14,12 +12,12 @@ interface Manager {
     summary_event_rank: number;
 }
 
-function ManagerLookup({ gameweekId }: {
-    gameweekId: number | null
+function ManagerLookup({ gameweekId, setSquad }: {
+    gameweekId: number | null,
+    setSquad: React.Dispatch<React.SetStateAction<Squad | null>>
 }) {
     const [managerId, setManagerId] = useState('');
     const [manager, setManager] = useState<Manager | null>(null);
-    const [squad, setSquad] = useState<Squad | null>(null);
     const [loading, setLoading] = useState(false);
 
     async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
@@ -59,59 +57,61 @@ function ManagerLookup({ gameweekId }: {
 
     return (
         <>
-            <form onSubmit={handleSubmit} className="manager-form">
-                <label htmlFor="manager-id">Find your FPL team</label>
+            <div className="manager-panel">
+                <form onSubmit={handleSubmit} className="manager-form">
+                    <label htmlFor="manager-id">Find your FPL team</label>
 
-                <div className="manager-input-group">
-                    <input
-                        id="manager-id"
-                        type="number"
-                        min="1"
-                        placeholder="e.g. 1894731"
-                        value={managerId}
-                        onChange={(e) => setManagerId(e.target.value)}
-                        required
-                    />
+                    <div className="manager-input-group">
+                        <input
+                            id="manager-id"
+                            type="number"
+                            min="1"
+                            placeholder="e.g. 1894731"
+                            value={managerId}
+                            onChange={(e) => setManagerId(e.target.value)}
+                            required
+                        />
 
-                    <button type="submit" disabled={loading || gameweekId === null}>
-                        {loading ? 'Searching...' : 'Find Team'}
-                    </button>
-                </div>
-            </form>
-
-            {manager && (
-                <div className="manager-result">
-                    <h2>{manager.name}</h2>
-
-                    <p>
-                        Manager: {manager.player_first_name} {manager.player_last_name}
-                    </p>
-
-                    <div className="manager-stats">
-                        <div>
-                            <span>GW points</span>
-                            <strong>{manager.summary_event_points.toLocaleString()}</strong>
-                        </div>
-
-                        <div>
-                            <span>Overall points</span>
-                            <strong>{manager.summary_overall_points.toLocaleString()}</strong>
-                        </div>
-
-                        <div>
-                            <span>Overall rank</span>
-                            <strong>{manager.summary_overall_rank.toLocaleString()}</strong>
-                        </div>
-
-                        <div>
-                            <span>GW rank</span>
-                            <strong>{manager.summary_event_rank.toLocaleString()}</strong>
-                        </div>
-
+                        <button type="submit" disabled={loading || gameweekId === null}>
+                            {loading ? 'Searching...' : 'Find Team'}
+                        </button>
                     </div>
-                </div>
-            )}
-            {squad && <SquadPitch squad={squad}/>}
+                </form>
+
+                {manager && (
+                    <div className="manager-result">
+                        <h2>{manager.name}</h2>
+
+                        <p>
+                            Manager: {manager.player_first_name} {manager.player_last_name}
+                        </p>
+
+                        <div className="manager-stats">
+                            <div>
+                                <span>GW points</span>
+                                <strong>{manager.summary_event_points.toLocaleString()}</strong>
+                            </div>
+
+                            <div>
+                                <span>Overall points</span>
+                                <strong>{manager.summary_overall_points.toLocaleString()}</strong>
+                            </div>
+
+                            <div>
+                                <span>Overall rank</span>
+                                <strong>{manager.summary_overall_rank.toLocaleString()}</strong>
+                            </div>
+
+                            <div>
+                                <span>GW rank</span>
+                                <strong>{manager.summary_event_rank.toLocaleString()}</strong>
+                            </div>
+
+                        </div>
+                    </div>
+                )}
+
+            </div>
         </>
     )
 }
