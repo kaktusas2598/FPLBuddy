@@ -315,3 +315,17 @@ body {
     }
 }
 
+.squad-player-badge {
+    display: block;
+    width: 40px;
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+    margin-top: 6px;
+}
+
+@media (max-width: 600px) {
+    .squad-player-badge {
+        width: 28px;
+    }
+}

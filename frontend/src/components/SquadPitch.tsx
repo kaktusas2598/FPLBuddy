@@ -1,4 +1,5 @@
 import type { Squad } from '../types.ts';
+import SquadPlayer from './SquadPlayer';
 
 function SquadPitch({ squad }: { squad: Squad}) {
 
@@ -16,55 +17,50 @@ function SquadPitch({ squad }: { squad: Squad}) {
             <div className="squad-pitch">
                 <div className="squad-row">
                     {goalkeepers.map(({ player, pick }) => (
-                        <div className="squad-player" key={player.id}>
-                            {player.web_name}
-                            {pick.is_captain && ' (C)'}
-                            {pick.is_vice_captain && ' (VC)'}
-                            <img
-                                src={`https://resources.premierleague.com/premierleague25/badges/${player.team_code}.svg`}
-                                alt={`${player.team} badge`}
-                                width="48"
-                                height="48"
-                            />
-
-                        </div>
+                        <SquadPlayer
+                            key={player.id}
+                            player={player}
+                            pick={pick}
+                        />
                     ))}
                 </div>
 
                 <div className="squad-row">
                     {defenders.map(({ player, pick }) => (
-                        <div className="squad-player" key={player.id}>
-                            {player.web_name}
-                            {pick.is_captain && ' (C)'}
-                            {pick.is_vice_captain && ' (VC)'}
-                        </div>
+                        <SquadPlayer
+                            key={player.id}
+                            player={player}
+                            pick={pick}
+                        />
                     ))}
                 </div>
                 <div className="squad-row">
                     {midfielders.map(({ player, pick }) => (
-                        <div className="squad-player" key={player.id}>
-                            {player.web_name}
-                            {pick.is_captain && ' (C)'}
-                            {pick.is_vice_captain && ' (VC)'}
-                        </div>
+                        <SquadPlayer
+                            key={player.id}
+                            player={player}
+                            pick={pick}
+                        />
                     ))}
                 </div>
                 <div className="squad-row">
                     {forwards.map(({ player, pick }) => (
-                        <div className="squad-player" key={player.id}>
-                            {player.web_name}
-                            {pick.is_captain && ' (C)'}
-                            {pick.is_vice_captain && ' (VC)'}
-                        </div>
+                        <SquadPlayer
+                            key={player.id}
+                            player={player}
+                            pick={pick}
+                        />
                     ))}
                 </div>
             </div>
             <div className="squad-bench">
                 <div className="squad-row">
-                    {substitutes.map(({ player }) => (
-                        <div className="squad-player" key={player.id}>
-                            {player.web_name}
-                        </div>
+                    {substitutes.map(({ player, pick }) => (
+                        <SquadPlayer
+                            key={player.id}
+                            player={player}
+                            pick={pick}
+                        />
                     ))}
                 </div>
 
