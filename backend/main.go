@@ -16,6 +16,9 @@ func main() {
 	// FPL Gameweek Information
 	http.HandleFunc("/current-gameweek", handlers.CurrentGameWeek)
 
+	// FPL fixture information (all fixtures from the current season)
+	http.HandleFunc("/fixtures", handlers.Fixtures)
+
 	// FPL manager and squads
 	http.HandleFunc("/manager/{id}", handlers.Manager)
 	http.HandleFunc("/manager/{manager_id}/squad/{gameweek_id}", handlers.Squad)
