@@ -89,6 +89,26 @@ type Player struct {
 	ICTIndex   string `json:"ict_index"`
 }
 
+// Fixture represents a single football match for a current season
+// TODO: potentially want a different type for "Fixture history" extracted from /api/element-summary/{player-id}
+type Fixture struct {
+	ID                  int    `json:"id"`
+	Code                int    `json:"code"`
+	GameWeek            int    `json:"event"`
+	Finished            bool   `json:"finished"`
+	FinishedProvisional bool   `json:"finished_provisional"`
+	KickoffTime         string `json:"kickoff_time"`
+	Minutes             int    `json:"minutes"`
+	Started             bool   `json:"started"`
+	TeamA               int    `json:"team_a`
+	TeamAScore          int    `json:"team_a_score`
+	TeamADifficulty     int    `json:"team_a_difficulty`
+	TeamH               int    `json:"team_h`
+	TeamHScore          int    `json:"team_h_score`
+	TeamHDifficulty     int    `json:"team_h_difficulty`
+	// TODO: Potentially want to add `stats` as well if needed for later
+}
+
 // Team represents actual premier league team, not to be confused with FPL squad!
 type Team struct {
 	ID        int    `json:"id"`
