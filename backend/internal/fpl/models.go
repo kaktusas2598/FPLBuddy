@@ -109,6 +109,16 @@ type Fixture struct {
 	// TODO: Potentially want to add `stats` as well if needed for later
 }
 
+// TODO: implement next 2 things using element-summary endpoint!
+// PlayerHistory represents historic fixture from a playuer with his stats
+/*type PlayerHistory struct {
+
+}
+
+type PlayerSummary struct {
+	History PlayerHistory
+}*/
+
 // Team represents actual premier league team, not to be confused with FPL squad!
 type Team struct {
 	ID        int    `json:"id"`
