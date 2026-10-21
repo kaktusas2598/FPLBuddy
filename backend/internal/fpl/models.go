@@ -100,12 +100,12 @@ type Fixture struct {
 	KickoffTime         string `json:"kickoff_time"`
 	Minutes             int    `json:"minutes"`
 	Started             bool   `json:"started"`
-	TeamA               int    `json:"team_a`
-	TeamAScore          int    `json:"team_a_score`
-	TeamADifficulty     int    `json:"team_a_difficulty`
-	TeamH               int    `json:"team_h`
-	TeamHScore          int    `json:"team_h_score`
-	TeamHDifficulty     int    `json:"team_h_difficulty`
+	TeamA               int    `json:"team_a"`
+	TeamAScore          int    `json:"team_a_score"`
+	TeamADifficulty     int    `json:"team_a_difficulty"`
+	TeamH               int    `json:"team_h"`
+	TeamHScore          int    `json:"team_h_score"`
+	TeamHDifficulty     int    `json:"team_h_difficulty"`
 	// TODO: Potentially want to add `stats` as well if needed for later
 }
 
