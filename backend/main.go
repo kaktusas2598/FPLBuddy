@@ -25,8 +25,7 @@ func main() {
 
 	// Premier league players
 	http.HandleFunc("/player/{id}", handlers.Player)
-	// TODO: using element-summary endpoint
-	//http.HandleFunc("/player/{id}/summary", handlers.PlayerSummary)
+	http.HandleFunc("/player/{id}/summary", handlers.PlayerSummary)
 
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
