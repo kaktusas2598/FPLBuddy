@@ -90,34 +90,75 @@ type Player struct {
 }
 
 // Fixture represents a single football match for a current season
-// TODO: potentially want a different type for "Fixture history" extracted from /api/element-summary/{player-id}
 type Fixture struct {
 	ID                  int    `json:"id"`
 	Code                int    `json:"code"`
-	GameWeek            int    `json:"event"`
+	GameWeek            *int   `json:"event"`
 	Finished            bool   `json:"finished"`
 	FinishedProvisional bool   `json:"finished_provisional"`
 	KickoffTime         string `json:"kickoff_time"`
 	Minutes             int    `json:"minutes"`
 	Started             bool   `json:"started"`
 	TeamA               int    `json:"team_a"`
-	TeamAScore          int    `json:"team_a_score"`
+	TeamAScore          *int   `json:"team_a_score"`
 	TeamADifficulty     int    `json:"team_a_difficulty"`
 	TeamH               int    `json:"team_h"`
-	TeamHScore          int    `json:"team_h_score"`
+	TeamHScore          *int   `json:"team_h_score"`
 	TeamHDifficulty     int    `json:"team_h_difficulty"`
 	// TODO: Potentially want to add `stats` as well if needed for later
 }
 
-// TODO: implement next 2 things using element-summary endpoint!
-// PlayerHistory represents historic fixture from a playuer with his stats
-/*type PlayerHistory struct {
-
+// PlayerHistory represents a single historic fixture for a player
+// with his play stats returned from /api/element-summary FPL API endpoint
+type PlayerHistory struct {
+	PlayerID                      int    `json:"element"`
+	FixtureID                     int    `json:"fixture"`
+	OpponentTeamID                int    `json:"opponent_team"`
+	TotalPoints                   int    `json:"total_points"`
+	WasHome                       bool   `json:"was_home"`
+	KickoffTime                   string `json:"kickoff_time"`
+	TeamHScore                    int    `json:"team_h_score"`
+	TeamAScore                    int    `json:"team_a_score"`
+	GameWeek                      int    `json:"round"`
+	MinutesPlayed                 int    `json:"minutes"`
+	GoalsScored                   int    `json:"goals_scored"`
+	Assists                       int    `json:"assists"`
+	CleanSheets                   int    `json:"clean_sheets"`
+	GoalsConceded                 int    `json:"goals_conceded"`
+	OwnGoals                      int    `json:"own_goals"`
+	PenaltiesSaved                int    `json:"penalties_saved"`
+	PenaltiesMissed               int    `json:"penalties_missed"`
+	YellowCards                   int    `json:"yellow_cards"`
+	RedCards                      int    `json:"red_cards"`
+	Saves                         int    `json:"saves"`
+	Bonus                         int    `json:"bonus"`
+	BPS                           int    `json:"bps"`
+	Influence                     string `json:"influence"`
+	Creativity                    string `json:"creativity"`
+	Threat                        string `json:"threat"`
+	ICTIndex                      string `json:"ict_index"`
+	ClearancesBlocksInterceptions int    `json:"clearances_blocks_interceptions"`
+	Recoveries                    int    `json:"recoveries"`
+	Tackles                       int    `json:"tackles"`
+	DefensiveContribution         int    `json:"defensive_contribution"`
+	Starts                        int    `json:"starts"`
+	ExpectedGoals                 string `json:"expected_goals"`
+	ExpectedAssists               string `json:"expected_assists"`
+	ExpectedGoalInvolvements      string `json:"expected_goal_involvements"`
+	ExpectedGoalsConceded         string `json:"expected_goals_conceded"`
+	Value                         int    `json:"value"`
+	TransfersBalance              int    `json:"transfers_balance"`
+	Selected                      int    `json:"selected"`
+	TransfersIn                   int    `json:"transfers_in"`
+	TransfersOut                  int    `json:"transfers_out"`
 }
 
+// PlayerSummary defines aggregates metrics for players historic and upcoming fixtures
 type PlayerSummary struct {
-	History PlayerHistory
-}*/
+	UpcomingFixtures []Fixture       `json:"fixtures"`
+	PastFixtures     []PlayerHistory `json:"history"`
+	// TODO: potentially in the near future we would want to include history_past for last season's aggregated metrics
+}
 
 // Team represents actual premier league team, not to be confused with FPL squad!
 type Team struct {
