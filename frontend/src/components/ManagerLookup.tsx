@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
 import type { Squad } from '../types.ts';
+import type { PlayerFixtureAnalysis } from '../types.ts';
 
 interface Manager {
     name: string;
@@ -12,9 +13,10 @@ interface Manager {
     summary_event_rank: number;
 }
 
-function ManagerLookup({ gameweekId, setSquad }: {
+function ManagerLookup({ gameweekId, setSquad, setFixtureAnalysis }: {
     gameweekId: number | null,
     setSquad: React.Dispatch<React.SetStateAction<Squad | null>>
+    setFixtureAnalysis: React.Dispatch<React.SetStateAction<PlayerFixtureAnalysis[]>>
 }) {
     const [managerId, setManagerId] = useState('');
     const [manager, setManager] = useState<Manager | null>(null);
@@ -35,7 +37,6 @@ function ManagerLookup({ gameweekId, setSquad }: {
 
             const managerResult = await managerResponse.json();
             setManager(managerResult)
-            console.log(managerResult);
 
             if (gameweekId == null) {
                 throw new Error('Current gameweek is not available');
@@ -47,7 +48,20 @@ function ManagerLookup({ gameweekId, setSquad }: {
 
             const squadResult = await squadResponse.json();
             setSquad(squadResult);
-            console.log(squadResult);
+
+            // NOTE: For now we set starting gameweek for calculations as next one after current gameweek!
+            const startGameweek = gameweekId + 1
+            const gameweekCount = 5
+            const fixtureAnalysisResponse = await fetch(`/api/manager/${managerId}/fixture-analysis?gameweek=${gameweekId}&start=${startGameweek}&count=${gameweekCount}`);
+            if (!fixtureAnalysisResponse.ok) {
+                throw new Error(`Fixture analysis lookup failed: ${fixtureAnalysisResponse.status}`);
+            }
+
+            const fixtureAnalysisResult = await fixtureAnalysisResponse.json();
+            setFixtureAnalysis(fixtureAnalysisResult);
+            console.log(fixtureAnalysisResult)
+
+
         } catch (error) {
             console.log('Failed to fetch manager or squad:', error);
         } finally {

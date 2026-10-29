@@ -23,4 +23,9 @@ export interface Squad {
     }[];
 }
 
+export interface PlayerFixtureAnalysis {
+    player_id: number;
+    average_difficulty: number;
+}
+
 export type SquadMetric = 'points' | 'price' | 'price_change' | 'form' | 'xg' | 'ownership'

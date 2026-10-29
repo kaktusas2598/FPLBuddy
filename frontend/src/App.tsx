@@ -24,6 +24,7 @@ function App() {
     const [status, setStatus] = useState<string>("Checking..")
     const [currentGameweek, setCurrentGameweek] = useState<GameWeek | null>(null);
     const [squad, setSquad] = useState<Squad | null>(null);
+    const [fixtureAnalysis, setFixtureAnalysis] = useState<PlayerFixtureAnalysis[]>([]);
 
     useEffect(() => {
         async function checkServerHealth() {
@@ -61,7 +62,7 @@ function App() {
                 </header>
 
                 <div className="dashboard-top">
-                    <ManagerLookup gameweekId={currentGameweek?.id ?? null} setSquad={setSquad}/>
+                    <ManagerLookup gameweekId={currentGameweek?.id ?? null} setSquad={setSquad} setFixtureAnalysis={setFixtureAnalysis}/>
                     <CurrentGameweek currentGameweek={currentGameweek}/>
                 </div>
 
