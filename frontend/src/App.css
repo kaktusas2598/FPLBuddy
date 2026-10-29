@@ -239,6 +239,29 @@ body {
   }
 }
 
+/* Squad layout - pitch + player's details */
+.squad-layout {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.squad-field {
+    flex: 1;
+    min-width: 0;
+}
+
+.squad-player-details {
+    margin-top: 20px;
+    width: 320px;
+    flex-shrink: 0;
+    box-sizing: border-box;
+
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 24px;
+}
 
 /* Squad pitch */
 .squad-pitch {
@@ -287,6 +310,12 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 8px;
     background: rgba(255, 255, 255, 0.06);
+
+    /* Button styling */
+    border: none;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
 }
 
 /* Substitutes */
@@ -380,3 +409,6 @@ body {
     }
 }
 
+/*.squad-player-details {*/
+
+/*}*/

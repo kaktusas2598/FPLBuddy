@@ -6,9 +6,10 @@ type SquadPick = Squad['picks'][number];
 // Custom type + extra props passed into this component
 type SquadPlayerProps = SquadPick & {
     selectedMetric: SquadMetric;
+    onSelect: () => void;
 }
 
-function SquadPlayer({ player, pick, selectedMetric }: SquadPlayerProps) {
+function SquadPlayer({ player, pick, selectedMetric, onSelect }: SquadPlayerProps) {
 
     let detailsValue: string | number;
     switch (selectedMetric) {
@@ -35,7 +36,7 @@ function SquadPlayer({ player, pick, selectedMetric }: SquadPlayerProps) {
     }
 
     return (
-        <div className="squad-player">
+        <button className="squad-player" onClick={onSelect}>
             <img
                 className="squad-player-badge"
                 src={`https://resources.premierleague.com/premierleague25/badges/${player.team_code}.svg`}
@@ -50,7 +51,7 @@ function SquadPlayer({ player, pick, selectedMetric }: SquadPlayerProps) {
             <span className="squad-player-subdetails">
                 {detailsValue}
             </span>
-        </div>
+        </button>
     );
 }
 

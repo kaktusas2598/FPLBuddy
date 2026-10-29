@@ -3,10 +3,12 @@ import { useState } from 'react'
 import type { Squad } from '../types.ts';
 import type { SquadMetric } from '../types.ts';
 import SquadPlayer from './SquadPlayer';
+import SquadPlayerDetails from './SquadPlayerDetails';
 
 
 function SquadPitch({ squad }: { squad: Squad}) {
     const [selectedMetric, setSelectedMetric] = useState<SquadMetric>('points');
+    const [selectedPlayer, setSelectedPlayer] = useState<Squad['picks'][number] | null>(null);
 
     function handleMetricChange(e: React.ChangeEvent<HTMLSelectElement>) {
         e.preventDefault();
@@ -25,69 +27,101 @@ function SquadPitch({ squad }: { squad: Squad}) {
 
     return (
         <>
-            <div className="squad-pitch">
-                <select className="squad-metric-select" onChange={handleMetricChange} value={selectedMetric}>
-                    <option value="points">Gameweek Points</option>
-                    <option value="price">Current Price</option>
-                    <option value="price_change">Season Price Change</option> {/* TODO: also want gw price change */}
-                    <option value="form">Form</option>
-                    <option value="ownership">Ownership</option>
-                    <option value="xg">Season xG</option> {/* TODO: probably better to display xG per 90min? */}
-                </select>
-                <div className="squad-row">
-                    {goalkeepers.map(({ player, pick }) => (
-                        <SquadPlayer
-                            key={player.id}
-                            player={player}
-                            pick={pick}
-                            selectedMetric={selectedMetric}
-                        />
-                    ))}
+            <div className="squad-layout">
+                <div className="squad-field">
+                    <div className="squad-pitch">
+                        <select className="squad-metric-select" onChange={handleMetricChange} value={selectedMetric}>
+                            <option value="points">Gameweek Points</option>
+                            <option value="price">Current Price</option>
+                            <option value="price_change">Season Price Change</option> {/* TODO: also want gw price change */}
+                            <option value="form">Form</option>
+                            <option value="ownership">Ownership</option>
+                            <option value="xg">Season xG</option> {/* TODO: probably better to display xG per 90min? */}
+                        </select>
+                        <div className="squad-row">
+                            {goalkeepers.map(({ player, pick }) => (
+                                <SquadPlayer
+                                    key={player.id}
+                                    player={player}
+                                    pick={pick}
+                                    selectedMetric={selectedMetric}
+                                    onSelect={() =>
+                                        setSelectedPlayer(current =>
+                                            current?.player.id === player.id ? null : { player, pick }
+                                        )
+                                    }
+                                />
+                            ))}
+                        </div>
+
+                        <div className="squad-row">
+                            {defenders.map(({ player, pick }) => (
+                                <SquadPlayer
+                                    key={player.id}
+                                    player={player}
+                                    pick={pick}
+                                    selectedMetric={selectedMetric}
+                                    onSelect={() =>
+                                        setSelectedPlayer(current =>
+                                            current?.player.id === player.id ? null : { player, pick }
+                                        )
+                                    }
+                                />
+                            ))}
+                        </div>
+                        <div className="squad-row">
+                            {midfielders.map(({ player, pick }) => (
+                                <SquadPlayer
+                                    key={player.id}
+                                    player={player}
+                                    pick={pick}
+                                    selectedMetric={selectedMetric}
+                                    onSelect={() =>
+                                        setSelectedPlayer(current =>
+                                            current?.player.id === player.id ? null : { player, pick }
+                                        )
+                                    }
+                                />
+                            ))}
+                        </div>
+                        <div className="squad-row">
+                            {forwards.map(({ player, pick }) => (
+                                <SquadPlayer
+                                    key={player.id}
+                                    player={player}
+                                    pick={pick}
+                                    selectedMetric={selectedMetric}
+                                    onSelect={() =>
+                                        setSelectedPlayer(current =>
+                                            current?.player.id === player.id ? null : { player, pick }
+                                        )
+                                    }
+                                />
+                            ))}
+                        </div>
+                    </div>
+                    <div className="squad-bench">
+                        <div className="squad-row">
+                            {substitutes.map(({ player, pick }) => (
+                                <SquadPlayer
+                                    key={player.id}
+                                    player={player}
+                                    pick={pick}
+                                    selectedMetric={selectedMetric}
+                                    onSelect={() =>
+                                        setSelectedPlayer(current =>
+                                            current?.player.id === player.id ? null : { player, pick }
+                                        )
+                                    }
+                                />
+                            ))}
+                        </div>
+                    </div>
                 </div>
 
-                <div className="squad-row">
-                    {defenders.map(({ player, pick }) => (
-                        <SquadPlayer
-                            key={player.id}
-                            player={player}
-                            pick={pick}
-                            selectedMetric={selectedMetric}
-                        />
-                    ))}
-                </div>
-                <div className="squad-row">
-                    {midfielders.map(({ player, pick }) => (
-                        <SquadPlayer
-                            key={player.id}
-                            player={player}
-                            pick={pick}
-                            selectedMetric={selectedMetric}
-                        />
-                    ))}
-                </div>
-                <div className="squad-row">
-                    {forwards.map(({ player, pick }) => (
-                        <SquadPlayer
-                            key={player.id}
-                            player={player}
-                            pick={pick}
-                            selectedMetric={selectedMetric}
-                        />
-                    ))}
-                </div>
-            </div>
-            <div className="squad-bench">
-                <div className="squad-row">
-                    {substitutes.map(({ player, pick }) => (
-                        <SquadPlayer
-                            key={player.id}
-                            player={player}
-                            pick={pick}
-                            selectedMetric={selectedMetric}
-                        />
-                    ))}
-                </div>
-
+                {selectedPlayer && (
+                    <SquadPlayerDetails selectedPlayer={selectedPlayer}/>
+                )}
             </div>
         </>
     )
