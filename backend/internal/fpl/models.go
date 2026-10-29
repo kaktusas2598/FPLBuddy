@@ -226,3 +226,10 @@ type Manager struct {
 	OverallRank  int    `json:"summary_overall_rank"`
 	GameweekRank int    `json:"summary_event_rank"`
 }
+
+// Below are custom complex data types used in analysing FPL performance
+
+type PlayerFixtureAnalysis struct {
+	PlayerID          int     `json:"player_id"`
+	AverageDifficulty float64 `json:"fixture_difficulty"`
+}

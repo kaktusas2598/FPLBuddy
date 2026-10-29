@@ -22,11 +22,12 @@ func main() {
 	// FPL manager and squads
 	http.HandleFunc("/manager/{id}", handlers.Manager)
 	http.HandleFunc("/manager/{manager_id}/squad/{gameweek_id}", handlers.Squad)
+	// Required query params: gameweek, count, start
+	http.HandleFunc("/manager/{id}/fixture-analysis", handlers.ManagerFixtureAnalysis)
 
 	// Premier league players
 	http.HandleFunc("/player/{id}", handlers.Player)
 	http.HandleFunc("/player/{id}/summary", handlers.PlayerSummary)
-
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
