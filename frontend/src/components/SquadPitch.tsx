@@ -2,11 +2,12 @@ import { useState } from 'react'
 
 import type { Squad } from '../types.ts';
 import type { SquadMetric } from '../types.ts';
+import type { PlayerFixtureAnalysis } from '../types.ts';
 import SquadPlayer from './SquadPlayer';
 import SquadPlayerDetails from './SquadPlayerDetails';
 
 
-function SquadPitch({ squad }: { squad: Squad}) {
+function SquadPitch({ squad, fixtureAnalysis }: { squad: Squad, fixtureAnalysis: PlayerFixtureAnalysis[]}) {
     const [selectedMetric, setSelectedMetric] = useState<SquadMetric>('points');
     const [selectedPlayer, setSelectedPlayer] = useState<Squad['picks'][number] | null>(null);
 
@@ -24,6 +25,10 @@ function SquadPitch({ squad }: { squad: Squad}) {
     const defenders = starters.filter(({ player }) => player.element_type === 2);
     const midfielders = starters.filter(({ player }) => player.element_type === 3);
     const forwards = starters.filter(({ player }) => player.element_type === 4);
+
+    const playerFixtureAnalysis = fixtureAnalysis.find(
+        item => item.player_id === selectedPlayer?.player.id
+    );
 
     return (
         <>
@@ -120,7 +125,10 @@ function SquadPitch({ squad }: { squad: Squad}) {
                 </div>
 
                 {selectedPlayer && (
-                    <SquadPlayerDetails selectedPlayer={selectedPlayer}/>
+                    <SquadPlayerDetails
+                        selectedPlayer={selectedPlayer}
+                        fixtureDifficulty={playerFixtureAnalysis?.average_difficulty ?? 0}
+                    />
                 )}
             </div>
         </>

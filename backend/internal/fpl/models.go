@@ -231,5 +231,5 @@ type Manager struct {
 
 type PlayerFixtureAnalysis struct {
 	PlayerID          int     `json:"player_id"`
-	AverageDifficulty float64 `json:"fixture_difficulty"`
+	AverageDifficulty float64 `json:"average_difficulty"`
 }

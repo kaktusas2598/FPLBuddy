@@ -10,6 +10,7 @@ import SquadPitch from './components/SquadPitch.tsx'
 
 // Custom types
 import type { Squad } from './types.ts';
+import type { PlayerFixtureAnalysis } from './types.ts';
 
 export interface GameWeek {
     id: number,
@@ -66,7 +67,7 @@ function App() {
                     <CurrentGameweek currentGameweek={currentGameweek}/>
                 </div>
 
-                {squad && <SquadPitch squad={squad}/>}
+                {squad && <SquadPitch squad={squad} fixtureAnalysis={fixtureAnalysis}/>}
             </main>
 
             <footer className="app-footer">
