@@ -12,6 +12,11 @@ export interface Squad {
             selected_by_percent: string;
             cost_change_start: number;
             expected_goals: string;
+            // Injury/availability related information
+            status: string;
+            news: string;
+            chance_of_playing_next_round: number | null;
+            chance_of_playing_this_round: number | null;
         };
         pick: {
             element: number;
