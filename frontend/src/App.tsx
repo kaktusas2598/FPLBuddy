@@ -12,6 +12,7 @@ import SquadPitch from './components/SquadPitch.tsx'
 import type { Squad } from './types.ts';
 import type { PlayerFixtureAnalysis } from './types.ts';
 import type { Team } from './types.ts';
+import type { Player } from './types.ts';
 
 export interface GameWeek {
     id: number,
@@ -28,6 +29,7 @@ function App() {
     const [squad, setSquad] = useState<Squad | null>(null);
     const [fixtureAnalysis, setFixtureAnalysis] = useState<PlayerFixtureAnalysis[]>([]);
     const [teams, setTeams] = useState<Team[]>([]);
+    const [players, setPlayers] = useState<Player[]>([]);
 
     useEffect(() => {
         async function checkServerHealth() {
@@ -45,7 +47,6 @@ function App() {
 
             const currentGameweekResult = await currentGameweekResponse.json();
             setCurrentGameweek(currentGameweekResult)
-            console.log(currentGameweekResult);
         }
 
         async function fetchTeams() {
@@ -56,13 +57,26 @@ function App() {
 
             const teamsResult = await teamsResponse.json();
             setTeams(teamsResult)
-            console.log(teamsResult);
         }
 
+        async function fetchPlayers() {
+            const playersResponse = await fetch('/api/players');
+            if (!playersResponse.ok) {
+                throw new Error(`Players lookup failed: ${playersResponse.status}`);
+            }
+
+            const playersResult = await playersResponse.json();
+            setPlayers(playersResult)
+            // NOTE: if this log is printing twice, then most likely because React's strict mode is enabled
+            // during which React runs effects an extra time to help debug in development
+            console.log(playersResult);
+        }
 
         checkServerHealth()
         fetchCurrentGameweek();
         fetchTeams();
+        // NOTE: Not sure if I really want to fetch all of them here, but ok for now
+        fetchPlayers();
     }, []);
 
     // This HTML like syntax is JSX or for typescript its TSX
@@ -82,7 +96,7 @@ function App() {
                     <CurrentGameweek currentGameweek={currentGameweek}/>
                 </div>
 
-                {squad && <SquadPitch squad={squad} fixtureAnalysis={fixtureAnalysis} teams={teams}/>}
+                {squad && <SquadPitch squad={squad} fixtureAnalysis={fixtureAnalysis} teams={teams} players={players}/>}
             </main>
 
             <footer className="app-footer">

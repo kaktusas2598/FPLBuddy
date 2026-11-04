@@ -4,14 +4,17 @@ import type { Squad } from '../types.ts';
 import type { SquadMetric } from '../types.ts';
 import type { PlayerFixtureAnalysis } from '../types.ts';
 import type { Team } from '../types.ts';
+import type { Player } from '../types.ts';
+
 import SquadPlayer from './SquadPlayer';
 import SquadPlayerDetails from './SquadPlayerDetails';
 
 
-function SquadPitch({ squad, fixtureAnalysis, teams }: {
+function SquadPitch({ squad, fixtureAnalysis, teams, players }: {
     squad: Squad,
     fixtureAnalysis: PlayerFixtureAnalysis[],
-    teams: Team[]
+    teams: Team[],
+    players: Player[]
 }) {
     const [selectedMetric, setSelectedMetric] = useState<SquadMetric>('points');
     const [selectedPlayer, setSelectedPlayer] = useState<Squad['picks'][number] | null>(null);
@@ -135,6 +138,7 @@ function SquadPitch({ squad, fixtureAnalysis, teams }: {
                         fixtureDifficulty={playerFixtureAnalysis?.average_difficulty ?? 0}
                         fixtures={playerFixtureAnalysis?.fixtures ?? []}
                         teams={teams}
+                        players={players}
                     />
                 )}
             </div>
