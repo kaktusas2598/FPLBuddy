@@ -1,37 +1,39 @@
+export interface Player {
+    id: number;
+    web_name: string;
+    team: number;
+    team_code: number;
+    element_type: number;
+    now_cost: number; // Divide by 10
+    selected_by_percent: string;
+    cost_change_start: number;
+    // Performance statistics
+    form: string;
+    total_points: number;
+    event_points: number; // To get per manager, account for chips used and captaincy
+    points_per_game: string;
+    expected_assists: string;
+    expected_goals: string;
+    goals_scored: number;
+    assists: number;
+    minutes: number;
+    // Defensive statistics
+    clean_sheets: number;
+    goals_conceded: number;
+    defensive_contribution: number;
+    saves: number;
+    // Bonus points
+    bonus: number;
+    // Injury/availability related information
+    status: string;
+    news: string;
+    chance_of_playing_next_round: number | null;
+    chance_of_playing_this_round: number | null;
+}
+
 export interface Squad {
     picks: {
-        player: {
-            id: number;
-            web_name: string;
-            team: number;
-            team_code: number;
-            element_type: number;
-            now_cost: number; // Divide by 10
-            selected_by_percent: string;
-            cost_change_start: number;
-            // Performance statistics
-            form: string;
-            total_points: number;
-            event_points: number; // To get per manager, account for chips used and captaincy
-            points_per_game: string;
-            expected_assists: string;
-            expected_goals: string;
-            goals_scored: number;
-            assists: number;
-            minutes: number;
-            // Defensive statistics
-            clean_sheets: number;
-            goals_conceded: number;
-            defensive_contribution: number;
-            saves: number;
-            // Bonus points
-            bonus: number;
-            // Injury/availability related information
-            status: string;
-            news: string;
-            chance_of_playing_next_round: number | null;
-            chance_of_playing_this_round: number | null;
-        };
+        player: Player;
         pick: {
             element: number;
             position: number;
