@@ -19,6 +19,10 @@ func main() {
 	// FPL fixture information (all fixtures from the current season)
 	http.HandleFunc("/fixtures", handlers.Fixtures)
 
+	// TODO: ATM both current-gameweek and teams both call FPL API's bootstrap-static endpoint, so will need to change!!!
+	// FPL teams information
+	http.HandleFunc("/teams", handlers.Teams)
+
 	// FPL manager and squads
 	http.HandleFunc("/manager/{id}", handlers.Manager)
 	http.HandleFunc("/manager/{manager_id}/squad/{gameweek_id}", handlers.Squad)
