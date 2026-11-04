@@ -19,9 +19,13 @@ func main() {
 	// FPL fixture information (all fixtures from the current season)
 	http.HandleFunc("/fixtures", handlers.Fixtures)
 
-	// TODO: ATM both current-gameweek and teams both call FPL API's bootstrap-static endpoint, so will need to change!!!
 	// FPL teams information
 	http.HandleFunc("/teams", handlers.Teams)
+
+	// TODO: ATM current-gameweek, teams and players endpoints all call FPL API's bootstrap-static endpoint
+	// So will need to change and introduce some kind of a cache layer here for that specific call
+	// ALL FPL players
+	http.HandleFunc("/players", handlers.Players)
 
 	// FPL manager and squads
 	http.HandleFunc("/manager/{id}", handlers.Manager)
@@ -29,9 +33,9 @@ func main() {
 	// Required query params: gameweek, count, start
 	http.HandleFunc("/manager/{id}/fixture-analysis", handlers.ManagerFixtureAnalysis)
 
-	// Premier league players
-	http.HandleFunc("/player/{id}", handlers.Player)
-	http.HandleFunc("/player/{id}/summary", handlers.PlayerSummary)
+	// Premier league player information endpoints
+	http.HandleFunc("/player/{id}", handlers.Player) // General player statistics and information
+	http.HandleFunc("/player/{id}/summary", handlers.PlayerSummary) // Players past and upcoming fixtures
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
