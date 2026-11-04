@@ -230,6 +230,7 @@ type Manager struct {
 // Below are custom complex data types used in analysing FPL performance
 
 type PlayerFixtureAnalysis struct {
-	PlayerID          int     `json:"player_id"`
-	AverageDifficulty float64 `json:"average_difficulty"`
+	PlayerID          int       `json:"player_id"`
+	AverageDifficulty float64   `json:"average_difficulty"`
+	Fixtures          []Fixture `json:"fixtures"`
 }

@@ -1,14 +1,15 @@
 package fpl
 
 // AnalyseFixtureDifficulty calculates the fixture difficulty for selected team
-// and selected number for upcoming gameweeeks
+// and selected number for upcoming gameweeeks also returning matching fixtures
 func AnalyseFixtureDifficulty(
 	teamID int,
 	fixtures []Fixture,
 	nextGameweek int,
 	gameweeks int,
-) float64 {
+) (float64, []Fixture) {
 
+	var matchingFixtures []Fixture
 	var fixturesCount, sum int
 	for _, fixture := range fixtures {
 		if fixture.GameWeek == nil {
@@ -21,6 +22,8 @@ func AnalyseFixtureDifficulty(
 			// Filter fixtures for correct teams
 			if fixture.TeamA == teamID || fixture.TeamH == teamID {
 				fixturesCount++
+				matchingFixtures = append(matchingFixtures, fixture)
+
 				if fixture.TeamA == teamID {
 					sum += fixture.TeamADifficulty
 				} else {
@@ -31,15 +34,15 @@ func AnalyseFixtureDifficulty(
 	}
 
 	if fixturesCount == 0 {
-		return 0
+		return 0, matchingFixtures
 	}
 
 	// Most basic averaging for now
-	return (float64(sum) / float64(fixturesCount))
+	return (float64(sum) / float64(fixturesCount)), matchingFixtures
 }
 
 // AnalyseSquadFixtures calculates average fixture difficulty for the whole selected squad based on specified
-// number of weeks starting from nextGameweek
+// number of weeks starting from nextGameweek and returns matching fixtures for this period
 // TODO: Write Unit test for this!
 func AnalyseSquadFixtures(
 	squad SquadDetails,
@@ -50,10 +53,15 @@ func AnalyseSquadFixtures(
 
 	var fixtureAnalysis []PlayerFixtureAnalysis
 	for _, player := range squad.Picks {
-		fixtureDifficulty := AnalyseFixtureDifficulty(player.Player.Team, fixtures, nextGameweek, gameweeks)
+		fixtureDifficulty, matchingFixtures := AnalyseFixtureDifficulty(
+			player.Player.Team,
+			fixtures,
+			nextGameweek,
+			gameweeks)
 		fixtureAnalysis = append(fixtureAnalysis, PlayerFixtureAnalysis{
 			PlayerID: player.Player.ID,
-			AverageDifficulty: fixtureDifficulty})
+			AverageDifficulty: fixtureDifficulty,
+			Fixtures: matchingFixtures})
 	}
 
 	return fixtureAnalysis
