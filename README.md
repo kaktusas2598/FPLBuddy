@@ -23,7 +23,7 @@ Built as a personal project to help me learn **Go**, **React** and **TypeScript*
 
 ## Roadmap
 
-- [ ] Position-specific player rankings
+- [x] Position-specific player rankings
 - [ ] Squad analysis and keep/sell/monitor recommendations
 - [ ] Transfer and replacement suggestions
 - [ ] Starting XI and captaincy recommendations
