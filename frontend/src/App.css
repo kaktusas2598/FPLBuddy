@@ -253,14 +253,23 @@ body {
 
 .squad-player-details {
     margin-top: 20px;
-    width: 320px;
+    width: 400px;
     flex-shrink: 0;
     box-sizing: border-box;
 
     background: #1e293b;
     border: 1px solid #334155;
     border-radius: 12px;
-    padding: 24px;
+    padding: 28px;
+}
+
+.squad-player-details h2 {
+    margin: 0 0 24px;
+}
+
+.squad-player-details p {
+    margin-bottom: 24px;
+    line-height: 1.6;
 }
 
 /* Squad pitch */
@@ -411,17 +420,28 @@ body {
 
 .fixture-list {
     display: flex;
-    gap: 6px;
+    gap: 8px;
 }
 
 .fixture-badge {
     flex: 1;
     min-width: 0;
-    padding: 10px 2px;
+    padding: 12px 2px;
     border-radius: 5px;
-    text-align: center;
-    font-weight: 600;
-    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.fixture-opponent {
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.fixture-venue {
+    font-size: 12px;
+    font-weight: 500;
 }
 
 .fixture-difficulty-1 { background: #375523; }

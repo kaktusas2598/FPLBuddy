@@ -11,6 +11,7 @@ import SquadPitch from './components/SquadPitch.tsx'
 // Custom types
 import type { Squad } from './types.ts';
 import type { PlayerFixtureAnalysis } from './types.ts';
+import type { Team } from './types.ts';
 
 export interface GameWeek {
     id: number,
@@ -26,6 +27,7 @@ function App() {
     const [currentGameweek, setCurrentGameweek] = useState<GameWeek | null>(null);
     const [squad, setSquad] = useState<Squad | null>(null);
     const [fixtureAnalysis, setFixtureAnalysis] = useState<PlayerFixtureAnalysis[]>([]);
+    const [teams, setTeams] = useState<Team[]>([]);
 
     useEffect(() => {
         async function checkServerHealth() {
@@ -46,8 +48,21 @@ function App() {
             console.log(currentGameweekResult);
         }
 
+        async function fetchTeams() {
+            const teamsResponse = await fetch('/api/teams');
+            if (!teamsResponse.ok) {
+                throw new Error(`Teams lookup failed: ${teamsResponse.status}`);
+            }
+
+            const teamsResult = await teamsResponse.json();
+            setTeams(teamsResult)
+            console.log(teamsResult);
+        }
+
+
         checkServerHealth()
         fetchCurrentGameweek();
+        fetchTeams();
     }, []);
 
     // This HTML like syntax is JSX or for typescript its TSX
@@ -67,7 +82,7 @@ function App() {
                     <CurrentGameweek currentGameweek={currentGameweek}/>
                 </div>
 
-                {squad && <SquadPitch squad={squad} fixtureAnalysis={fixtureAnalysis}/>}
+                {squad && <SquadPitch squad={squad} fixtureAnalysis={fixtureAnalysis} teams={teams}/>}
             </main>
 
             <footer className="app-footer">

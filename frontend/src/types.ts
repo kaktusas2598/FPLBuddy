@@ -46,4 +46,11 @@ export interface PlayerFixtureAnalysis {
     fixtures: Fixture[];
 }
 
+export interface Team {
+    id: number;
+    name: string;
+    short_name: string;
+    code: number;
+}
+
 export type SquadMetric = 'points' | 'price' | 'price_change' | 'form' | 'xg' | 'ownership'

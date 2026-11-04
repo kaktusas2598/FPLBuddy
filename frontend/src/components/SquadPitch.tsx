@@ -3,11 +3,16 @@ import { useState } from 'react'
 import type { Squad } from '../types.ts';
 import type { SquadMetric } from '../types.ts';
 import type { PlayerFixtureAnalysis } from '../types.ts';
+import type { Team } from '../types.ts';
 import SquadPlayer from './SquadPlayer';
 import SquadPlayerDetails from './SquadPlayerDetails';
 
 
-function SquadPitch({ squad, fixtureAnalysis }: { squad: Squad, fixtureAnalysis: PlayerFixtureAnalysis[]}) {
+function SquadPitch({ squad, fixtureAnalysis, teams }: {
+    squad: Squad,
+    fixtureAnalysis: PlayerFixtureAnalysis[],
+    teams: Team[]
+}) {
     const [selectedMetric, setSelectedMetric] = useState<SquadMetric>('points');
     const [selectedPlayer, setSelectedPlayer] = useState<Squad['picks'][number] | null>(null);
 
@@ -129,6 +134,7 @@ function SquadPitch({ squad, fixtureAnalysis }: { squad: Squad, fixtureAnalysis:
                         selectedPlayer={selectedPlayer}
                         fixtureDifficulty={playerFixtureAnalysis?.average_difficulty ?? 0}
                         fixtures={playerFixtureAnalysis?.fixtures ?? []}
+                        teams={teams}
                     />
                 )}
             </div>
