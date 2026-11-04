@@ -40,19 +40,47 @@ function SquadPlayerDetails({ selectedPlayer, fixtureDifficulty, fixtures, teams
                 </div>
             )}
 
-            {/* TODO: Show position-specific performance statistics, for example saves for GK and Defensive contributions for DEF */}
             {/* TODO: Show player rank for each indidual statistics, for ex. "Total points (3rd): 123" */}
             <div className="player-performance">
                 <h3>Performance</h3>
                 <div className="performance-grid">
+                    {/* Generic statistics sensible for all positions */}
                     <div>Total points <strong>{selectedPlayer.player.total_points}</strong></div>
                     <div>Points per game <strong>{selectedPlayer.player.points_per_game}</strong></div>
                     <div>Form <strong>{selectedPlayer.player.form}</strong></div>
                     <div>Minutes <strong>{selectedPlayer.player.minutes}</strong></div>
-                    <div>Goals <strong>{selectedPlayer.player.goals_scored}</strong></div>
-                    <div>Assists <strong>{selectedPlayer.player.assists}</strong></div>
-                    <div>xG <strong>{selectedPlayer.player.expected_goals}</strong></div>
-                    <div>xA <strong>{selectedPlayer.player.expected_assists}</strong></div>
+                    {/* Generic non-goalkeeper statistics */}
+                    {selectedPlayer.player.element_type !== 1 && (
+                        <>
+                            <div>Goals <strong>{selectedPlayer.player.goals_scored}</strong></div>
+                            <div>Assists <strong>{selectedPlayer.player.assists}</strong></div>
+                            <div>xG <strong>{selectedPlayer.player.expected_goals}</strong></div>
+                            <div>xA <strong>{selectedPlayer.player.expected_assists}</strong></div>
+                        </>
+                    )}
+                    {/* Goalkeeper-specific statistics */}
+                    {selectedPlayer.player.element_type === 1 && (
+                        <>
+                            <div>Saves <strong>{selectedPlayer.player.saves}</strong></div>
+                            <div>Clean Sheets <strong>{selectedPlayer.player.clean_sheets}</strong></div>
+                            <div>Goals Conceded <strong>{selectedPlayer.player.goals_conceded}</strong></div>
+                            <div>Bonus <strong>{selectedPlayer.player.bonus}</strong></div>
+                        </>
+                    )}
+                    {/* Defender-specific statistics */}
+                    {selectedPlayer.player.element_type === 2 && (
+                        <>
+                            <div>Clean Sheets <strong>{selectedPlayer.player.clean_sheets}</strong></div>
+                            <div>Defensive contribution <strong>{selectedPlayer.player.defensive_contribution}</strong></div>
+                        </>
+                    )}
+                    {/* Midfielder-specific statistics */}
+                    {selectedPlayer.player.element_type === 3 && (
+                        <>
+                            <div>Defensive contribution <strong>{selectedPlayer.player.defensive_contribution}</strong></div>
+                        </>
+                    )}
+
                 </div>
             </div>
 

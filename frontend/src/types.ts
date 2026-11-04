@@ -13,12 +13,19 @@ export interface Squad {
             form: string;
             total_points: number;
             event_points: number; // To get per manager, account for chips used and captaincy
-            points_per_game: number;
+            points_per_game: string;
             expected_assists: string;
             expected_goals: string;
             goals_scored: number;
             assists: number;
             minutes: number;
+            // Defensive statistics
+            clean_sheets: number;
+            goals_conceded: number;
+            defensive_contribution: number;
+            saves: number;
+            // Bonus points
+            bonus: number;
             // Injury/availability related information
             status: string;
             news: string;
