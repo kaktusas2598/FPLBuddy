@@ -6,12 +6,19 @@ export interface Squad {
             team: number;
             team_code: number;
             element_type: number;
-            event_points: number; // To get per manager, account for chips used and captaincy
             now_cost: number; // Divide by 10
-            form: string;
             selected_by_percent: string;
             cost_change_start: number;
+            // Performance statistics
+            form: string;
+            total_points: number;
+            event_points: number; // To get per manager, account for chips used and captaincy
+            points_per_game: number;
+            expected_assists: string;
             expected_goals: string;
+            goals_scored: number;
+            assists: number;
+            minutes: number;
             // Injury/availability related information
             status: string;
             news: string;
