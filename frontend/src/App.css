@@ -409,6 +409,23 @@ body {
     }
 }
 
-/*.squad-player-details {*/
+.fixture-list {
+    display: flex;
+    gap: 6px;
+}
 
-/*}*/
+.fixture-badge {
+    flex: 1;
+    min-width: 0;
+    padding: 10px 2px;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: 600;
+    color: #fff;
+}
+
+.fixture-difficulty-1 { background: #375523; }
+.fixture-difficulty-2 { background: #00ff87; color: #111; }
+.fixture-difficulty-3 { background: #e7e7e7; color: #111; }
+.fixture-difficulty-4 { background: #ff1751; }
+.fixture-difficulty-5 { background: #80002e; }

@@ -128,6 +128,7 @@ function SquadPitch({ squad, fixtureAnalysis }: { squad: Squad, fixtureAnalysis:
                     <SquadPlayerDetails
                         selectedPlayer={selectedPlayer}
                         fixtureDifficulty={playerFixtureAnalysis?.average_difficulty ?? 0}
+                        fixtures={playerFixtureAnalysis?.fixtures ?? []}
                     />
                 )}
             </div>

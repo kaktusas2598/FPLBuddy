@@ -23,9 +23,27 @@ export interface Squad {
     }[];
 }
 
+export interface Fixture {
+    id: number;
+    code: number;
+    event: number | null;
+    finished: boolean;
+    finished_provisional: boolean;
+    kickoff_time: string;
+    minutes: number;
+    started: boolean;
+    team_a: number;
+    team_h: number;
+    team_a_score: number | null;
+    team_h_score: number | null;
+    team_a_difficulty: number;
+    team_h_difficulty: number;
+}
+
 export interface PlayerFixtureAnalysis {
     player_id: number;
     average_difficulty: number;
+    fixtures: Fixture[];
 }
 
 export type SquadMetric = 'points' | 'price' | 'price_change' | 'form' | 'xg' | 'ownership'
