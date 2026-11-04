@@ -35,8 +35,14 @@ function SquadPlayer({ player, pick, selectedMetric, onSelect }: SquadPlayerProp
             detailsValue = 'N/A';
     }
 
+    const availabilityClass =
+        player.status === 'd'
+            ? 'squad-player-doubtful'
+            : ['i', 's', 'u'].includes(player.status) ? 'squad-player-unavailable'
+                : '';
+
     return (
-        <button className="squad-player" onClick={onSelect}>
+        <button type="button" className={`squad-player ${availabilityClass}`} onClick={onSelect}>
             <img
                 className="squad-player-badge"
                 src={`https://resources.premierleague.com/premierleague25/badges/${player.team_code}.svg`}

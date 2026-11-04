@@ -11,27 +11,52 @@ function SquadPlayerDetails({ selectedPlayer, fixtureDifficulty, fixtures, teams
     teams: Team[];
 }) {
 
+    const statusLabels: Record<string, string> = {
+        a: 'Available',
+        d: 'Doubtful',
+        i: 'Injured',
+        s: 'Suspended',
+        u: 'Unavailable',
+    };
+
     return (
         <div className="squad-player-details">
-            <h2>{selectedPlayer.player.web_name}</h2>
-            <p>Next 5 fixture average difficulty: <strong>{fixtureDifficulty}</strong></p>
-            <div className="fixture-list">
-                {fixtures.map((fixture) => {
-                    const isHome = fixture.team_h === selectedPlayer.player.team;
-                    const opponentId = isHome ? fixture.team_a : fixture.team_h;
-                    const opponent = teams.find(team => team.id === opponentId);
+            <h2>Selected Player: {selectedPlayer.player.web_name}</h2>
+            {selectedPlayer.player.status !== 'a' && (
+                <div className="player-availability">
+                    <strong>{statusLabels[selectedPlayer.player.status] ?? 'Unavailable'}</strong>
 
-                    const difficulty = isHome
-                        ? fixture.team_h_difficulty
-                        : fixture.team_a_difficulty;
+                    {selectedPlayer.player.news && (
+                        <p>{selectedPlayer.player.news}</p>
+                    )}
 
-                    return (
-                        <div key={fixture.id} className={`fixture-badge fixture-difficulty-${difficulty}`}>
-                            <span className="fixture-opponent">{opponent?.short_name ?? '???'}</span>
-                            <span className="fixture-venue">({isHome ? 'H' : 'A'})</span>
-                        </div>
-                    );
-                })}
+                    {selectedPlayer.player.chance_of_playing_next_round !== null && (
+                        <span>
+                            Chance of playing next round: {selectedPlayer.player.chance_of_playing_next_round}%
+                        </span>
+                    )}
+                </div>
+            )}
+            <div className="player-fixtures">
+                <p>Next 5 fixture average difficulty: <strong>{fixtureDifficulty}</strong></p>
+                <div className="fixture-list">
+                    {fixtures.map((fixture) => {
+                        const isHome = fixture.team_h === selectedPlayer.player.team;
+                        const opponentId = isHome ? fixture.team_a : fixture.team_h;
+                        const opponent = teams.find(team => team.id === opponentId);
+
+                        const difficulty = isHome
+                            ? fixture.team_h_difficulty
+                            : fixture.team_a_difficulty;
+
+                        return (
+                            <div key={fixture.id} className={`fixture-badge fixture-difficulty-${difficulty}`}>
+                                <span className="fixture-opponent">{opponent?.short_name ?? '???'}</span>
+                                <span className="fixture-venue">({isHome ? 'H' : 'A'})</span>
+                            </div>
+                        );
+                    })}
+                </div>
             </div>
 
         </div>
