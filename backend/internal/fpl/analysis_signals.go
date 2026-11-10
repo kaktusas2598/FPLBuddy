@@ -97,13 +97,39 @@ func EvaluatePlayer(player Player) []PlayerSignal {
 	return playerSignals
 }
 
+// EvaluatePlayerFixtures produces a signal of difficult fixtures based on supplied PlayerFixtureAnalysis
+func EvaluatePlayerFixtures(analysis PlayerFixtureAnalysis) *PlayerSignal {
+	if len(analysis.Fixtures) == 0 {
+		return nil
+	}
+
+	// NOTE: 3.4 value based on my observations, this is not yet set in stone!!!
+	if analysis.AverageDifficulty >= 3.4 {
+		return &PlayerSignal{
+			PlayerID: analysis.PlayerID,
+			Type:     SignalDifficultFixtures,
+			Severity: SeverityMedium,
+			Reason:   "Player faces difficult upcoming fixtures",
+		}
+	}
+
+	return nil
+}
+
+
 // EvaluateSquad evaluates all manager's squad picks and produces a slice of player signals
-func EvaluateSquad(squad SquadDetails) []PlayerSignal {
+func EvaluateSquad(squad SquadDetails, fixtureAnalysis []PlayerFixtureAnalysis) []PlayerSignal {
 
 	var playerSignals []PlayerSignal
 
 	for _, pick := range squad.Picks {
 		playerSignals = append(playerSignals, EvaluatePlayer(pick.Player)...)
+	}
+
+	for _, analysis := range fixtureAnalysis {
+		if signal := EvaluatePlayerFixtures(analysis); signal != nil {
+			playerSignals = append(playerSignals, *signal)
+		}
 	}
 
 	return playerSignals
@@ -144,6 +170,8 @@ func IdentifySquadIssues(squad SquadDetails, signals []PlayerSignal) []SquadIssu
 		var priority SignalSeverity
 		var reason string
 
+		// TODO: we should account for all types of signal instead of analysing each one separately!
+		// Player with poor form(medium) AND difficult fixtures(low) could be more serious severity potentially!
 		switch signal.Type {
 		case SignalAvailabilityRisk:
 			if signal.Severity == SeverityHigh {
@@ -152,7 +180,7 @@ func IdentifySquadIssues(squad SquadDetails, signals []PlayerSignal) []SquadIssu
 					reason = "Squad cannot field the minimum number of available players in this position. " + signal.Reason
 				} else {
 					priority = SeverityMedium
-					reason = "Player unavailable, but squad has sufficient personal cover. " + signal.Reason
+					reason = "Player unavailable, but squad has sufficient positional cover. " + signal.Reason
 				}
 			} else {
 				priority = SeverityLow
@@ -165,6 +193,9 @@ func IdentifySquadIssues(squad SquadDetails, signals []PlayerSignal) []SquadIssu
 			} else {
 				continue
 			}
+		case SignalDifficultFixtures:
+			priority = SeverityLow
+			reason = "Player has a difficult upcoming fixture run. " + signal.Reason
 		default:
 			continue
 		}
@@ -175,6 +206,29 @@ func IdentifySquadIssues(squad SquadDetails, signals []PlayerSignal) []SquadIssu
 			Reason: reason,
 		})
 	}
+
+	return issues
+}
+
+
+// AnalyseManagerSquad acts as an orchestrator in calculating fixture difficulty for the squad, evaluating signals
+// and return list of potential squad issues used for recommendation engine
+func AnalyseManagerSquad(
+	squad SquadDetails,
+	fixtures []Fixture,
+	nextGameweek int,
+	gameweeks int,
+) []SquadIssue {
+	fixtureAnalysis := AnalyseSquadFixtures(
+		squad,
+		fixtures,
+		nextGameweek,
+		gameweeks,
+		)
+
+	signals := EvaluateSquad(squad, fixtureAnalysis)
+
+	issues := IdentifySquadIssues(squad, signals)
 
 	return issues
 }
