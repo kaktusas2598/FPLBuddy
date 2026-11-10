@@ -227,10 +227,29 @@ type Manager struct {
 	GameweekRank int    `json:"summary_event_rank"`
 }
 
+// SignalType and SignalSeverity define custom types with constants used in measuring observations about individual
+// players which will determine which decisions to take based on these signals
+type SignalType string
+type SignalSeverity string
+
+const (
+	SignalAvailabilityRisk SignalType = "availability_risk"
+
+	SeverityMedium SignalSeverity = "medium"
+	SeverityHigh   SignalSeverity = "high"
+)
+
 // Below are custom complex data types used in analysing FPL performance
 
 type PlayerFixtureAnalysis struct {
 	PlayerID          int       `json:"player_id"`
 	AverageDifficulty float64   `json:"average_difficulty"`
 	Fixtures          []Fixture `json:"fixtures"`
+}
+
+type PlayerSignal struct {
+	PlayerID int            `json:"player_id"`
+	Type     SignalType     `json:"type"`
+	Severity SignalSeverity `json:"severity"`
+	Reason   string         `json:"reason"`
 }
