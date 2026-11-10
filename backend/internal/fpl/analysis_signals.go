@@ -23,9 +23,7 @@ func EvaluatePlayerAvailability(player Player) *PlayerSignal {
 			Severity: SeverityMedium,
 			Reason:   reason,
 		}
-	case "i": // Injured
-	case "s": // Suspended
-	case "u": // Unavailable
+	case "i", "s", "u": // Injured, Suspended or Unavailable
 		if reason == "" {
 			reason = "Player is currently injured, suspended or unavailable"
 		}
@@ -97,4 +95,86 @@ func EvaluatePlayer(player Player) []PlayerSignal {
 	}
 
 	return playerSignals
+}
+
+// EvaluateSquad evaluates all manager's squad picks and produces a slice of player signals
+func EvaluateSquad(squad SquadDetails) []PlayerSignal {
+
+	var playerSignals []PlayerSignal
+
+	for _, pick := range squad.Picks {
+		playerSignals = append(playerSignals, EvaluatePlayer(pick.Player)...)
+	}
+
+	return playerSignals
+}
+
+// IdentifySquadIssues inspects all player signals from selected squads and produces a slice of issues
+func IdentifySquadIssues(squad SquadDetails, signals []PlayerSignal) []SquadIssue {
+
+	var issues []SquadIssue
+
+	// To create index of players and count available players by position
+	players := make(map[int]Player)
+	available := make(map[int]int)
+
+	for _, pick := range squad.Picks {
+		player := pick.Player
+		players[player.ID] = player
+		// Count available players by position: GK, DEF, MID and FWD
+		if player.Status == "a" {
+			available[player.ElementType]++
+		}
+	}
+
+	// Minimum players by position required to field a valid starting XI
+	minimum := map[int]int{
+		1: 1, // Goalkeepers
+		2: 3, // Defenders
+		3: 2, // Midfielders
+		4: 1, // Forwards
+	}
+
+	for _, signal := range signals {
+		player, exists := players[signal.PlayerID]
+		if !exists {
+			continue
+		}
+
+		var priority SignalSeverity
+		var reason string
+
+		switch signal.Type {
+		case SignalAvailabilityRisk:
+			if signal.Severity == SeverityHigh {
+				if available[player.ElementType] < minimum[player.ElementType] {
+					priority = SeverityHigh
+					reason = "Squad cannot field the minimum number of available players in this position. " + signal.Reason
+				} else {
+					priority = SeverityMedium
+					reason = "Player unavailable, but squad has sufficient personal cover. " + signal.Reason
+				}
+			} else {
+				priority = SeverityLow
+				reason = "Player unavailability uncertain. " + signal.Reason
+			}
+		case SignalPoorForm:
+			if signal.Severity == SeverityMedium {
+				priority = SeverityMedium
+				reason = "Player's recent form warrants reviewing their place in the squad. " + signal.Reason
+			} else {
+				continue
+			}
+		default:
+			continue
+		}
+
+		issues = append(issues, SquadIssue{
+			PlayerID: player.ID,
+			Priority: priority,
+			Reason: reason,
+		})
+	}
+
+	return issues
 }

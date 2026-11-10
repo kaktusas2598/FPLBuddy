@@ -234,9 +234,9 @@ type SignalSeverity string
 
 const (
 	SignalAvailabilityRisk SignalType = "availability_risk"
-	SignalPoorForm SignalType = "poor_form"
+	SignalPoorForm         SignalType = "poor_form"
 
-	SeverityLow SignalSeverity = "low"
+	SeverityLow    SignalSeverity = "low"
 	SeverityMedium SignalSeverity = "medium"
 	SeverityHigh   SignalSeverity = "high"
 )
@@ -249,9 +249,17 @@ type PlayerFixtureAnalysis struct {
 	Fixtures          []Fixture `json:"fixtures"`
 }
 
+// PlayerSignal describes a single signal associated with individual player like poor form or unavailability
 type PlayerSignal struct {
 	PlayerID int            `json:"player_id"`
 	Type     SignalType     `json:"type"`
 	Severity SignalSeverity `json:"severity"`
+	Reason   string         `json:"reason"`
+}
+
+// SquadIssue takes into account player's position in the squad to identify potentiall issues
+type SquadIssue struct {
+	PlayerID int            `json:"player_id"`
+	Priority SignalSeverity `json:"priority"`
 	Reason   string         `json:"reason"`
 }
