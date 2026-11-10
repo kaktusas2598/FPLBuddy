@@ -234,7 +234,9 @@ type SignalSeverity string
 
 const (
 	SignalAvailabilityRisk SignalType = "availability_risk"
+	SignalPoorForm SignalType = "poor_form"
 
+	SeverityLow SignalSeverity = "low"
 	SeverityMedium SignalSeverity = "medium"
 	SeverityHigh   SignalSeverity = "high"
 )
