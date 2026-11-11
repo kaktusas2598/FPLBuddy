@@ -74,4 +74,18 @@ export interface Team {
     code: number;
 }
 
+export type SignalSeverity = "low" | "medium" | "high";
+
+export interface SquadIssue {
+  player_id: number;
+  priority: SignalSeverity;
+  reason: string;
+}
+
+export interface TransferRecommendation {
+  player_out: Player;
+  replacements: Player[];
+  issues: SquadIssue[];
+}
+
 export type SquadMetric = 'points' | 'price' | 'price_change' | 'form' | 'xg' | 'ownership'
