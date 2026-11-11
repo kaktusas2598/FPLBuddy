@@ -58,8 +58,25 @@ func EvaluatePlayerForm(player Player) *PlayerSignal {
 		return nil
 	}
 
-	// TODO: this would be better if it evaluated based on position! Goalkeepers can have lower form for example
-	if playerForm <= 3.2 {
+	type FormThresholds struct {
+		Medium float64
+		Low    float64
+	}
+
+	// Define what latest form is not acceptable for each position
+	var formThresholds = map[int]FormThresholds{
+		1: {Medium: 2.5, Low: 3.2}, // GK
+		2: {Medium: 2.8, Low: 3.5}, // DEF
+		3: {Medium: 3.2, Low: 4.0}, // MID
+		4: {Medium: 3.5, Low: 4.2}, // FWD
+	}
+
+	thresholds, ok := formThresholds[player.ElementType]
+	if !ok {
+		return nil
+	}
+
+	if playerForm <= thresholds.Medium {
 		playerSignal = &PlayerSignal{
 			PlayerID: player.ID,
 			Type:     SignalPoorForm,
@@ -68,7 +85,7 @@ func EvaluatePlayerForm(player Player) *PlayerSignal {
 		}
 	}
 
-	if playerForm > 3.2 && playerForm <= 4.0 {
+	if playerForm > thresholds.Medium && playerForm <= thresholds.Low {
 		playerSignal = &PlayerSignal{
 			PlayerID: player.ID,
 			Type:     SignalPoorForm,
