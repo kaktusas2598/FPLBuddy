@@ -13,10 +13,11 @@ interface Manager {
     summary_event_rank: number;
 }
 
-function ManagerLookup({ gameweekId, setSquad, setFixtureAnalysis }: {
+function ManagerLookup({ gameweekId, setSquad, setFixtureAnalysis, setSelectedManagerId }: {
     gameweekId: number | null,
     setSquad: React.Dispatch<React.SetStateAction<Squad | null>>
     setFixtureAnalysis: React.Dispatch<React.SetStateAction<PlayerFixtureAnalysis[]>>
+    setSelectedManagerId: React.Dispatch<React.SetStateAction<number | null>>
 }) {
     const [managerId, setManagerId] = useState('');
     const [manager, setManager] = useState<Manager | null>(null);
@@ -27,6 +28,7 @@ function ManagerLookup({ gameweekId, setSquad, setFixtureAnalysis }: {
 
         setLoading(true);
         setManager(null);
+        setSelectedManagerId(null)
         setSquad(null);
 
         try {
@@ -59,6 +61,7 @@ function ManagerLookup({ gameweekId, setSquad, setFixtureAnalysis }: {
 
             const fixtureAnalysisResult = await fixtureAnalysisResponse.json();
             setFixtureAnalysis(fixtureAnalysisResult);
+            setSelectedManagerId(Number(managerId))
             console.log(fixtureAnalysisResult)
 
 

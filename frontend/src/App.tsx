@@ -7,6 +7,7 @@ import './App.css'
 import ManagerLookup from './components/ManagerLookup.tsx'
 import CurrentGameweek from './components/CurrentGameweek.tsx'
 import SquadPitch from './components/SquadPitch.tsx'
+import TransferRecommendations from './components/TransferRecommendations.tsx'
 
 // Custom types
 import type { Squad } from './types.ts';
@@ -30,6 +31,7 @@ function App() {
     const [fixtureAnalysis, setFixtureAnalysis] = useState<PlayerFixtureAnalysis[]>([]);
     const [teams, setTeams] = useState<Team[]>([]);
     const [players, setPlayers] = useState<Player[]>([]);
+    const [selectedManagerId, setManagerId] = useState<number | null>(null);
 
     useEffect(() => {
         async function checkServerHealth() {
@@ -92,11 +94,20 @@ function App() {
                 </header>
 
                 <div className="dashboard-top">
-                    <ManagerLookup gameweekId={currentGameweek?.id ?? null} setSquad={setSquad} setFixtureAnalysis={setFixtureAnalysis}/>
+                    <ManagerLookup
+                        gameweekId={currentGameweek?.id ?? null}
+                        setSquad={setSquad}
+                        setFixtureAnalysis={setFixtureAnalysis}
+                        setSelectedManagerId={setManagerId}
+                    />
                     <CurrentGameweek currentGameweek={currentGameweek}/>
                 </div>
 
                 {squad && <SquadPitch squad={squad} fixtureAnalysis={fixtureAnalysis} teams={teams} players={players}/>}
+
+                {selectedManagerId != null && currentGameweek != null && (
+                    <TransferRecommendations managerId={selectedManagerId} gameweekId={currentGameweek.id}/>
+                )}
             </main>
 
             <footer className="app-footer">

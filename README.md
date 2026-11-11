@@ -1,6 +1,6 @@
 # FPLBuddy
 
-**FPLBuddy** is a work-in-progress Fantasy Premier League assistant app that helps managers understand their squads, assess upcoming fixtures and, eventually, make better transfer and team-selection decisions.
+**FPLBuddy** is a work-in-progress Fantasy Premier League assistant app that helps managers understand their squads, assess upcoming fixtures and make better transfer and team-selection decisions.
 
 Built as a personal project to help me learn **Go**, **React** and **TypeScript**, using data from the official Fantasy Premier League API.
 
@@ -12,6 +12,9 @@ Built as a personal project to help me learn **Go**, **React** and **TypeScript*
 - Compare squad metrics including points, form, price, expected goals and ownership.
 - Fetch current gameweek, team and player data through a Go API.
 - Cache FPL bootstrap data in memory to reduce repeated API requests.
+- Analyse squads for potential issues, including poor form, player availability and difficult upcoming fixtures.
+- Identify players who may warrant a transfer, with explanations and issue priorities.
+- Suggest ranked replacement players based on form, fixture difficulty, affordability and FPL squad restrictions.
 
 ## Tech stack
 
@@ -19,13 +22,16 @@ Built as a personal project to help me learn **Go**, **React** and **TypeScript*
 - **Frontend:** React, TypeScript, Vite
 - **Development:** Docker Compose
 - **Data:** Official Fantasy Premier League API
-- **Tools** NeoVim
+- **Tools:** NeoVim
 
 ## Roadmap
 
 - [x] Position-specific player rankings
-- [ ] Squad analysis and keep/sell/monitor recommendations
-- [ ] Transfer and replacement suggestions
+- [x] Squad analysis and transfer recommendations
+- [x] Transfer and replacement suggestions
+- [ ] Keep/Sell/Monitor suggestion
+- [ ] Improve recommendation quality with position-aware analysis and player comparisons
+- [ ] Investigate authenticated FPL endpoints for accurate budgets and selling prices
 - [ ] Starting XI and captaincy recommendations
 - [ ] Historical data and predictive modelling
 
