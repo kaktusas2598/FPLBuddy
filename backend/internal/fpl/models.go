@@ -105,7 +105,6 @@ type Fixture struct {
 	TeamH               int    `json:"team_h"`
 	TeamHScore          *int   `json:"team_h_score"`
 	TeamHDifficulty     int    `json:"team_h_difficulty"`
-	// TODO: Potentially want to add `stats` as well if needed for later
 }
 
 // PlayerHistory represents a single historic fixture for a player
@@ -233,8 +232,8 @@ type SignalType string
 type SignalSeverity string
 
 const (
-	SignalAvailabilityRisk SignalType = "availability_risk"
-	SignalPoorForm         SignalType = "poor_form"
+	SignalAvailabilityRisk  SignalType = "availability_risk"
+	SignalPoorForm          SignalType = "poor_form"
 	SignalDifficultFixtures SignalType = "difficult_fixtures"
 
 	SeverityLow    SignalSeverity = "low"
@@ -263,4 +262,11 @@ type SquadIssue struct {
 	PlayerID int            `json:"player_id"`
 	Priority SignalSeverity `json:"priority"`
 	Reason   string         `json:"reason"`
+}
+
+// TransferRecommendation define potential replacement and existing issues for one squad player
+type TransferRecommendation struct {
+	PlayerOut    Player       `json:"player_out"`
+	Replacements []Player     `json:"replacements"`
+	Issues       []SquadIssue `json:"issues"`
 }

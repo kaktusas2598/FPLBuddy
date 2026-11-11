@@ -22,8 +22,6 @@ func main() {
 	// FPL teams information
 	http.HandleFunc("/teams", handlers.Teams)
 
-	// TODO: ATM current-gameweek, teams and players endpoints all call FPL API's bootstrap-static endpoint
-	// So will need to change and introduce some kind of a cache layer here for that specific call
 	// ALL FPL players
 	http.HandleFunc("/players", handlers.Players)
 
