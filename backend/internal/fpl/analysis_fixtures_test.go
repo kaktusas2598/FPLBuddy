@@ -15,10 +15,14 @@ func TestAnalyseFixtureDifficulty(t *testing.T) {
 		},
 	}
 
-	result := AnalyzeFixtureDifficulty(1, fixtures, 9, 1)
+	difficulty, matchingFixtures := AnalyseFixtureDifficulty(1, fixtures, 9, 1)
 
-	if result != 2 {
-		t.Errorf("expected difficulty 2, got %v", result)
+	if difficulty != 2 {
+    t.Errorf("expected difficulty 2, got %v", difficulty)
+}
+
+	if len(matchingFixtures) != 1 {
+		t.Errorf("expected 1 matching fixture, got %d", len(matchingFixtures))
 	}
 }
 
