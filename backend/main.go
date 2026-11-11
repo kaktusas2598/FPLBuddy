@@ -30,6 +30,7 @@ func main() {
 	http.HandleFunc("/manager/{manager_id}/squad/{gameweek_id}", handlers.Squad)
 	// Required query params: gameweek, count, start
 	http.HandleFunc("/manager/{id}/fixture-analysis", handlers.ManagerFixtureAnalysis)
+	http.HandleFunc("/manager/{id}/transfer-recommendations", handlers.TransferRecommendations)
 
 	// Premier league player information endpoints
 	http.HandleFunc("/player/{id}", handlers.Player) // General player statistics and information

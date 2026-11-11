@@ -141,6 +141,19 @@ func RecommendTransfers(
 			continue
 		}
 
+		// Exclude lower priority issues
+		actionable := false
+		for _, issue := range playerIssues {
+			if issue.Priority == SeverityMedium || issue.Priority == SeverityHigh {
+				actionable = true
+				break
+			}
+		}
+
+		if !actionable {
+			continue
+		}
+
 		// TODO: Use FPL session cookie provided by user to get actual purchase prices
 		// Obviously wont just paste the cookie but will investigate this!
 		// Fow now just using NowCost for less accurate recommendation!!

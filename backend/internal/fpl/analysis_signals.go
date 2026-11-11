@@ -58,7 +58,8 @@ func EvaluatePlayerForm(player Player) *PlayerSignal {
 		return nil
 	}
 
-	if playerForm <= 2.0 {
+	// TODO: this would be better if it evaluated based on position! Goalkeepers can have lower form for example
+	if playerForm <= 3.2 {
 		playerSignal = &PlayerSignal{
 			PlayerID: player.ID,
 			Type:     SignalPoorForm,
@@ -67,7 +68,7 @@ func EvaluatePlayerForm(player Player) *PlayerSignal {
 		}
 	}
 
-	if playerForm > 2.0 && playerForm <= 3.0 {
+	if playerForm > 3.2 && playerForm <= 4.0 {
 		playerSignal = &PlayerSignal{
 			PlayerID: player.ID,
 			Type:     SignalPoorForm,
